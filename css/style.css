@@ -1,0 +1,14 @@
+nav {
+    background-color: #0069bb;
+    max-width: 100vw;
+	box-shadow: 0 0 10px #444444;
+}
+
+.site-panel {
+	margin: 10px 20px;
+	align-content: center;
+}
+
+.nav-link:hover {
+    font-size: 130%;
+}
