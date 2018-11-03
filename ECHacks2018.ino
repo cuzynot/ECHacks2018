@@ -12,6 +12,9 @@ int pinDHT11 = 2;
 // temp and humidity sensor
 SimpleDHT11 dht11(pinDHT11);
 
+// the desired humidity set by the user
+int userHumidity = 60;
+
 void setup() {
   Serial.begin(9600);
   pinMode(A5, OUTPUT);// Set A5 as OUTPUT
@@ -20,22 +23,6 @@ void setup() {
 
 void loop() {
   aq = aqs.slope();
-  if (aq >= 0){
-    if (aq == 0) {
-      Serial.println("High pollution! Force signal active");
-    } else if (aq == 1) {
-      Serial.println("High pollution!");
-    } else if (aq == 2) {
-      Serial.println("Low pollution!");
-    } else if (aq == 3) {
-      Serial.println("Fresh air");
-    } else {
-      Serial.print("aq ");
-      Serial.println(aq);
-    }
-  } else {
-    Serial.println("heh?");
-  }
 
   // get temp and humidity
   byte temperature = 0;
@@ -49,19 +36,27 @@ void loop() {
     delay(1000);
     return;
   }
-  
+
+  // print temperature
+  Serial.print("temperature:"); 
   Serial.print((int)temperature); 
-  Serial.print(" *C, "); 
+  Serial.println(" *C, "); 
+
+  // print humidity
+  Serial.print("humidity:"); 
   Serial.print((int)humidity); 
   Serial.println(" H");
 
-  if((int)humidity < 60){
-    Serial.println("Less than 60 H");
+  if((int)humidity < userHumidity){
+    Serial.print("Less than ");
     digitalWrite(A5, HIGH);
   } else {
-    Serial.println("More than 60 H");
+    Serial.println("More than ");
     digitalWrite(A5, LOW);
   }
+  Serial.println(userHumidity);
+
+  Serial.println();
   
   // DHT11 sampling rate is 2HZ.
   delay(2000);
