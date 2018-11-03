@@ -52,6 +52,7 @@ function initSocketIO(httpServer,debug) {
 
 		socket.on('buttonval', function(data) {
 			serialPort.write(data + 'E');
+			console.log("wrote " + data);
 		});
 
 		socket.on('sliderval', function(data) {
