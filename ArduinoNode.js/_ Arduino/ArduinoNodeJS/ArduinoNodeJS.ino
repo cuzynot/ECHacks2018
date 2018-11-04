@@ -6,27 +6,15 @@
 AirQuality aqs;
 int aq = -1;
 
-// dht pin
-int pinDHT11 = 2;
-
 // temp and humidity sensor
+int pinDHT11 = 2;
 SimpleDHT11 dht11(pinDHT11);
-
-
-
-
-// LED vars
-const int ledPin = 13;
-// const int pwmPin = 3;
 
 // LED read vars
 String inputString = "";         // a string to hold incoming data
-boolean toggleComplete = false;  // whether the string is complete
-// boolean pwmComplete = false;
+boolean buttonClicked = false;  // whether the string is complete
+boolean slided = false;
 
-// Potmeter vars
-const int analogInPin = A0;
-int sensorValue = 0;        // value read from the potmeter
 // int prevValue = 0;          // previous value from the potmeter
 
 // the desired humidity set by the user
@@ -35,35 +23,33 @@ int userHumidity = 60;
 void setup() {
   // initialize serial:
   Serial.begin(9600);
-  // init LEDS
-  pinMode(ledPin, OUTPUT);
-  // pinMode(pwmPin,OUTPUT);
-  digitalWrite(ledPin, 0);
-  // analogWrite(pwmPin,0);
+
+  // ultrasonic mist
+  pinMode(A5, OUTPUT);
+
+  // init air quality sensor
+  aqs.init(A0);
 }
 
 void loop() {
+  aq = aqs.slope();
+  
   // Recieve data from Node and write it to a String
-
   for (int i = 0; i < 100; i++) {
-    if (Serial.available() > 0 && toggleComplete == false) { // && pwmComplete == false) {
-      char inChar = (char)Serial.read();
-      if (inChar == 'E') { // end character for led
-        toggleComplete = true;
-      }
-      //    if(inChar == 'P'){
-      //      pwmComplete = true;
-      //    }
-      else {
-        inputString += inChar;
+    if (Serial.available() > 0) {
+      char c = (char)Serial.read();
+      if (c == 'E') { // end character for led
+        buttonClicked = true;
+      } else if (c == 'P') {
+        slided = true;
+      } else {
+        inputString += c;
       }
     }
 
-    if (toggleComplete) break;
+    if (buttonClicked || slided) break;
     delay(20);
   }
-
-  Serial.println("broken");
 
   // get temp and humidity
   byte temperature = 0;
@@ -78,35 +64,44 @@ void loop() {
     return;
   }
 
-  if (inputString == "0") {
-    digitalWrite(A5, 0);
-  } else {
-    // print temperature
-    Serial.print("temperature:");
-    Serial.print((int)temperature);
-    Serial.println(" *C, ");
+  // get air quality
+  // aq = aqs.slope();
 
-    // print humidity
-    Serial.print("humidity:");
-    Serial.print((int)humidity);
-    Serial.println(" H");
-
-    if ((int)humidity < userHumidity) {
-      Serial.print("Less than ");
-      digitalWrite(A5, HIGH);
+  if (buttonClicked) {
+    if (inputString == "0") {
+      digitalWrite(A5, 0);
     } else {
-      Serial.print("More than ");
-      digitalWrite(A5, LOW);
-    }
+      // print temperature
+      Serial.print("temperature:");
+      Serial.print((int)temperature);
+      Serial.println(" *C, ");
 
-    Serial.println(userHumidity);
+      // print humidity
+      Serial.print("humidity:");
+      Serial.print((int)humidity);
+      Serial.println(" H");
+
+      if ((int)humidity < userHumidity) {
+        Serial.print("Less than ");
+        digitalWrite(A5, HIGH);
+      } else {
+        Serial.print("More than ");
+        digitalWrite(A5, LOW);
+      }
+
+      Serial.println(userHumidity);
+    }
   }
+
+  // reset string and toggles
   inputString = "";
-  toggleComplete = false;
+  buttonClicked = false;
+  slided = false;
+
   //  }
 
   //  // Toggle LED 13
-  //  if(!Serial.available() && toggleComplete == true)
+  //  if(!Serial.available() && buttonClicked == true)
   //  {
   //    // convert String to int.
   //    int recievedVal = stringToInt();
@@ -119,7 +114,7 @@ void loop() {
   //    {
   //      digitalWrite(ledPin,recievedVal);
   //    }
-  //    toggleComplete = false;
+  //    buttonClicked = false;
   //  }
   //  // Dim LED 3
   //  if(!Serial.available() && pwmComplete == true)
@@ -131,8 +126,9 @@ void loop() {
   //
   //    pwmComplete = false;
   //  }
-  
-  sensorValue = analogRead(analogInPin);
+
+
+  // sensorValue = analogRead(analogInPin);
   //     Serial.print("sensor ");
   //     Serial.println(sensorValue);
 
@@ -151,4 +147,16 @@ int stringToInt() {
   inputString = "";
   int _recievedVal = atoi(charHolder);
   return _recievedVal;
+}
+
+ISR(TIMER2_OVF_vect) {
+    if(aqs.counter == 122) {//set 2 seconds as a detected duty
+        aqs.last_vol = aqs.first_vol;
+        aqs.first_vol = analogRead(A0); // change this value if you use another A port
+        aqs.counter = 0;
+        aqs.timer_index = 1;
+        PORTB = PORTB^0x20;
+    } else {
+        aqs.counter++;
+    }
 }

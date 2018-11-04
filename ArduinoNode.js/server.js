@@ -52,11 +52,12 @@ function initSocketIO(httpServer,debug) {
 
 		socket.on('buttonval', function(data) {
 			serialPort.write(data + 'E');
-			console.log("wrote " + data);
+			console.log("button " + data);
 		});
 
 		socket.on('sliderval', function(data) {
 			serialPort.write(data + 'P');
+			console.log("slide " + data);
 		});
     });
 }
@@ -79,8 +80,8 @@ function serialListener(debug)
             // Listens to incoming data
         serialPort.on('data', function(data) {
              receivedData += data.toString();
-          if (receivedData .indexOf('E') >= 0 && receivedData .indexOf('B') >= 0) {
-           sendData = receivedData .substring(receivedData .indexOf('B') + 1, receivedData .indexOf('E'));
+          if (receivedData.indexOf('E') >= 0 && receivedData.indexOf('B') >= 0) {
+           sendData = receivedData.substring(receivedData.indexOf('B') + 1, receivedData.indexOf('E'));
            receivedData = '';
          }
          // send the incoming data to browser with websockets.
