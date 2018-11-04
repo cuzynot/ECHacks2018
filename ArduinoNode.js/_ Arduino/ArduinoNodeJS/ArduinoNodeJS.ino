@@ -11,8 +11,8 @@ int pinDHT11 = 2;
 SimpleDHT11 dht11(pinDHT11);
 
 // strings
-String inputString = "0";         // a string to hold incoming data
-String prevString = "0";
+String inputString = "";         // a string to hold incoming data
+String prevString = "";
 
 // bools
 boolean buttonClicked = false;  // whether the string is complete
@@ -40,16 +40,19 @@ void loop() {
     if (Serial.available() > 0) {
       char c = (char)Serial.read();
       if (c == 'E') { // end character for led
-        buttonClicked = true;
+        buttonClicked = !buttonClicked;
+        break;
       } else if (c == 'P') {
         Serial.println("cur is p");
-        slided = true;
+        userHumidity = inputString.toInt();
+        Serial.println("new humidity ");
+        Serial.println(userHumidity);
       } else {
         inputString += c;
       }
     }
 
-    if (buttonClicked || slided) break;
+    if (slided) break;
     delay(20);
   }
 
@@ -64,50 +67,36 @@ void loop() {
 
   // if there's an error
   if ((err = dht11.read(&temperature, &humidity, NULL)) != SimpleDHTErrSuccess) {
-    // Serial.print("Read DHT11 failed, err=");
-    // Serial.println(err);
+    Serial.print("Read DHT11 failed, err=");
+    Serial.println(err);
     delay(1000);
     return;
   }
+  
+  if (buttonClicked) {
+    // print temperature
+    Serial.print("temperature:");
+    Serial.print((int)temperature);
+    Serial.println(" *C, ");
 
-  if (slided) {
-    userHumidity = inputString.toInt();
-    Serial.println("new humidity ");
+    // print humidity
+    Serial.print("humidity:");
+    Serial.print((int)humidity);
+    Serial.println(" H");
+
+    if ((int)humidity < userHumidity) {
+      Serial.print("Less than ");
+      digitalWrite(A5, HIGH);
+    } else {
+      Serial.print("More than ");
+      digitalWrite(A5, LOW);
+    }
     Serial.println(userHumidity);
   } else {
-    if (inputString == "0") {
-      digitalWrite(A5, 0);
-      prevString = "0";
-    } else if (inputString == "" && prevString == "0") {
-      digitalWrite(A5, 0);
-    } else {
-      // print temperature
-      Serial.print("temperature:");
-      Serial.print((int)temperature);
-      Serial.println(" *C, ");
-
-      // print humidity
-      Serial.print("humidity:");
-      Serial.print((int)humidity);
-      Serial.println(" H");
-
-      if ((int)humidity < userHumidity) {
-        Serial.print("Less than ");
-        digitalWrite(A5, HIGH);
-      } else {
-        Serial.print("More than ");
-        digitalWrite(A5, LOW);
-      }
-
-      if (inputString != "") {
-        prevString = inputString;
-      }
-      Serial.println(userHumidity);
-    }
+    digitalWrite(A5, LOW);
   }
 
   inputString = "";
-  buttonClicked = false;
   slided = false;
 
   //  }
