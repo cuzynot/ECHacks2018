@@ -11,8 +11,8 @@ int pinDHT11 = 2;
 SimpleDHT11 dht11(pinDHT11);
 
 // strings
-String inputString = "";         // a string to hold incoming data
-String prevString = "";
+String inputString = "0";         // a string to hold incoming data
+String prevString = "0";
 
 // bools
 boolean buttonClicked = false;  // whether the string is complete
@@ -21,7 +21,7 @@ boolean slided = false;
 // int prevValue = 0;          // previous value from the potmeter
 
 // the desired humidity set by the user
-int userHumidity = 60;
+int userHumidity = 0;
 
 void setup() {
   // initialize serial:
@@ -42,6 +42,7 @@ void loop() {
       if (c == 'E') { // end character for led
         buttonClicked = true;
       } else if (c == 'P') {
+        Serial.println("cur is p");
         slided = true;
       } else {
         inputString += c;
@@ -54,8 +55,8 @@ void loop() {
 
   // get air quality
   aq = aqs.slope();
-  delay(500);
-  
+  // delay(500);
+
   // get temp and humidity
   byte temperature = 0;
   byte humidity = 0;
@@ -69,36 +70,42 @@ void loop() {
     return;
   }
 
-  if (inputString == "0" || prevString == "0") {
-    digitalWrite(A5, 0);
+  if (slided) {
+      userHumidity = inputString.toInt();
+      Serial.println("new humidity ");
+      Serial.println(userHumidity);
   } else {
-    // print temperature
-    Serial.print("temperature:"); delay(10);
-    Serial.print((int)temperature); delay(10);
-    Serial.println(" *C, "); delay(10);
-
-    // print humidity
-    Serial.print("humidity:"); delay(10);
-    Serial.print((int)humidity); delay(10);
-    Serial.println(" H"); delay(10);
-
-    if ((int)humidity < userHumidity) {
-      Serial.print("Less than ");
-      digitalWrite(A5, HIGH);
+    if (inputString == "0") {
+      digitalWrite(A5, 0);
+      prevString = "0";
+    } else if (inputString == "" && prevString == "0"){
+      digitalWrite(A5, 0);
     } else {
-      Serial.print("More than ");
-      digitalWrite(A5, LOW);
+      // print temperature
+      Serial.print("temperature:");
+      Serial.print((int)temperature);
+      Serial.println(" *C, ");
+
+      // print humidity
+      Serial.print("humidity:");
+      Serial.print((int)humidity);
+      Serial.println(" H");
+
+      if ((int)humidity < userHumidity) {
+        Serial.print("Less than ");
+        digitalWrite(A5, HIGH);
+      } else {
+        Serial.print("More than ");
+        digitalWrite(A5, LOW);
+      }
+
+      if (inputString != ""){
+        prevString = inputString;
+      }
+      Serial.println(userHumidity);
     }
-
-    delay(10);
-    Serial.println(userHumidity);
-    delay(10);
   }
-
-  // reset string and toggles
-  if (prevString != "0"){
-    prevString = inputString;
-  }
+  
   inputString = "";
   buttonClicked = false;
   slided = false;
