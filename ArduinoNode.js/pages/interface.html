@@ -174,7 +174,7 @@ body, html {
 	function initSlider() {
 		$( "#slider" ).slider({
 			min:0,
-			max:255,
+			max:100,
 			change: function(event,ui) {
 				iosocket.emit('sliderval',ui.value);
 				document.getElementById('sliderValue').innerHTML = ui.value;
@@ -211,7 +211,7 @@ body, html {
 	<div id="sData">
 		<h2>Data to Arduino</h2>
 		<div id="btnHolder">
-			<input type="checkbox" id="check" value="toggle"/><label for="check">Toggle LED</label>
+			<input type="checkbox" id2="check" value="toggle"/><label for="check">Toggle LED</label>
 		</div>
 		<p id="sliderTxt">LED Dimmer</p>
 		<div id="slider"></div>
