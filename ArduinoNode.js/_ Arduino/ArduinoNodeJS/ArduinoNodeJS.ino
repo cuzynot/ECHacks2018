@@ -54,6 +54,7 @@ void loop() {
 
   // get air quality
   aq = aqs.slope();
+  delay(500);
   
   // get temp and humidity
   byte temperature = 0;
