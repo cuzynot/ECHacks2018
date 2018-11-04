@@ -71,14 +71,14 @@ void loop() {
   }
 
   if (slided) {
-      userHumidity = inputString.toInt();
-      Serial.println("new humidity ");
-      Serial.println(userHumidity);
+    userHumidity = inputString.toInt();
+    Serial.println("new humidity ");
+    Serial.println(userHumidity);
   } else {
     if (inputString == "0") {
       digitalWrite(A5, 0);
       prevString = "0";
-    } else if (inputString == "" && prevString == "0"){
+    } else if (inputString == "" && prevString == "0") {
       digitalWrite(A5, 0);
     } else {
       // print temperature
@@ -99,13 +99,13 @@ void loop() {
         digitalWrite(A5, LOW);
       }
 
-      if (inputString != ""){
+      if (inputString != "") {
         prevString = inputString;
       }
       Serial.println(userHumidity);
     }
   }
-  
+
   inputString = "";
   buttonClicked = false;
   slided = false;
@@ -141,26 +141,24 @@ void loop() {
 
 
   // sensorValue = analogRead(analogInPin);
-  //     Serial.print("sensor ");
-  //     Serial.println(sensorValue);
+  //  Serial.print("sensor ");
+  //  Serial.println(sensorValue);
 
-  // read the analog in value:
-  //      Serial.print("B"); // begin character
-  //      Serial.print(sensorValue);
-  //      Serial.print("E"); // end character
-  //      prevValue = sensorValue;
+  Serial.print("B"); // begin character
+  Serial.print(temperature);
+  Serial.print("E"); // end character
 
   delay(2000); // give the Arduino some breathing room.
   Serial.println();
 }
 
-int stringToInt() {
-  char charHolder[inputString.length() + 1];
-  inputString.toCharArray(charHolder, inputString.length() + 1);
-  inputString = "";
-  int _recievedVal = atoi(charHolder);
-  return _recievedVal;
-}
+//int stringToInt() {
+//  char charHolder[inputString.length() + 1];
+//  inputString.toCharArray(charHolder, inputString.length() + 1);
+//  inputString = "";
+//  int _recievedVal = atoi(charHolder);
+//  return _recievedVal;
+//}
 
 ISR(TIMER2_OVF_vect) {
   if (aqs.counter == 122) { //set 2 seconds as a detected duty
