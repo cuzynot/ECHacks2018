@@ -1,6 +1,6 @@
 <!DOCTYPE HTML>
 <html>
-<title>W3.CSS Template</title>
+<title>Myst</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
@@ -9,74 +9,74 @@
 <style>
 body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
 body, html {
-    height: 100%;
-    line-height: 1.8;
+	height: 100%;
+	line-height: 1.8;
 }
 /* Full height image header */
 .bgimg-1 {
-    background-position: center;
-    background-size: cover;
-    background-image: url("h.jpg");
-    min-height: 100%;
+	background-position: center;
+	background-size: cover;
+	background-image: url("h.jpg");
+	min-height: 100%;
 }
 .w3-bar .w3-button {
-    padding: 16px;
+	padding: 16px;
 }
 </style>
 <body>
 
-<!-- Navbar (sit on top) -->
-<div class="w3-top">
-  <div class="w3-bar w3-white w3-card" id="myNavbar">
-    <a href="site.html" class="w3-bar-item w3-button w3-wide">LOGO</a>
-    <!-- Right-sided navbar links -->
-    <div class="w3-right w3-hide-small">
-      <a href="#about" class="w3-bar-item w3-button">ABOUT</a>
-      <a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
-      <a href="localhost:1337" class="w3-bar-item w3-button"><i class="fa fa-th"></i> Main</a>
+	<!-- Navbar (sit on top) -->
+	<div class="w3-top">
+		<div class="w3-bar w3-white w3-card" id="myNavbar">
+			<a href="site.html" class="w3-bar-item w3-button w3-wide">LOGO</a>
+			<!-- Right-sided navbar links -->
+			<div class="w3-right w3-hide-small">
+				<a href="#about" class="w3-bar-item w3-button">ABOUT</a>
+				<a href="#team" class="w3-bar-item w3-button"><i class="fa fa-user"></i> TEAM</a>
+				<a href="localhost:1337" class="w3-bar-item w3-button"><i class="fa fa-th"></i> Main</a>
 
-      <a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACT</a>
-    </div>
-    <!-- Hide right-floated links on small screens and replace them with a menu icon -->
+				<a href="#contact" class="w3-bar-item w3-button"><i class="fa fa-envelope"></i> CONTACT</a>
+			</div>
+			<!-- Hide right-floated links on small screens and replace them with a menu icon -->
 
-    <a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
-      <i class="fa fa-bars"></i>
-    </a>
-  </div>
-</div>
-<head>    
-	<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
-	<style>
-	body {
-		margin: 0px;
-		padding: 0px;
-	}
-	#rData{
-		float:left;
-		margin-left:100px;
-		margin-right:auto;
-		width:470px;
-	}
-	#sData{
-		float: left;
-		margin-left:100px;
-		margin-right:auto;
-		width:470px;
-	}
-	h2{
-		text-align:center;
-	}
-	#myCanvas {
-		border: 2px dashed grey;
-	}
-	#btnHolder, #sliderTxt{
-		text-align:center;
-	}
-</style>
-<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-<script src="/socket.io/socket.io.js"></script>
-<script>
+			<a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
+				<i class="fa fa-bars"></i>
+			</a>
+		</div>
+	</div>
+	<head>    
+		<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
+		<style>
+		body {
+			margin: 0px;
+			padding: 0px;
+		}
+		#rData{
+			float:left;
+			margin-left:100px;
+			margin-right:auto;
+			width:470px;
+		}
+		#sData{
+			float: left;
+			margin-left:100px;
+			margin-right:auto;
+			width:470px;
+		}
+		h2{
+			text-align:center;
+		}
+		#myCanvas {
+			border: 2px dashed grey;
+		}
+		#btnHolder, #sliderTxt{
+			text-align:center;
+		}
+	</style>
+	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
 	// canvas request for all browsers
 	window.requestAnimFrame = (function(callback) {
 		return window.requestAnimationFrame || 
@@ -115,13 +115,13 @@ body, html {
 	  	potValue = pollOneH*2;
 	  }
 
-	  content.fillText('Potmeter value: ' + potValue, text.x, text.y);
+	  content.fillText('temperature: ' + potValue, text.x, text.y);
 
           // render graph 
-          content.fillStyle = 'orange';
-          content.fillRect(poll1.x,(poll1.y-poll1.h),poll1.w,poll1.h);
+          // content.fillStyle = 'orange';
+          // content.fillRect(poll1.x,(poll1.y-poll1.h),poll1.w,poll1.h);
 
-          content.fill();
+          // content.fill();
 
 	  // request new frame
 	  requestAnimFrame(function() {
@@ -198,24 +198,24 @@ body, html {
 
 
 <body>
-<div id="chartContainer" style="height: 300px; width: 100%;"></div>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </body>
 
 </head>
 <body>
 	<div id="rData">
-		<h2>Data from Arduino</h2>
+		
 		<canvas id="myCanvas" width="460" height="540"></canvas>
 	</div>
 	<div id="sData">
 		<h2>Data to Arduino</h2>
 		<div id="btnHolder">
-			<button id="check">Toggle LED</button>
+			<button id="check">On/Off</button>
 		</div>
-		<p id="sliderTxt">LED Dimmer</p>
+		<p id="sliderTxt">Humidity</p>
 		<div id="slider"></div>
-		 Range
+		Range
 		<div id="sliderValue">0</div>
 	</div> 
 </body>
