@@ -10,8 +10,11 @@ int aq = -1;
 int pinDHT11 = 2;
 SimpleDHT11 dht11(pinDHT11);
 
-// LED read vars
+// strings
 String inputString = "";         // a string to hold incoming data
+String prevString = "";
+
+// bools
 boolean buttonClicked = false;  // whether the string is complete
 boolean slided = false;
 
@@ -32,8 +35,6 @@ void setup() {
 }
 
 void loop() {
-  aq = aqs.slope();
-  
   // Recieve data from Node and write it to a String
   for (int i = 0; i < 100; i++) {
     if (Serial.available() > 0) {
@@ -51,6 +52,9 @@ void loop() {
     delay(20);
   }
 
+  // get air quality
+  aq = aqs.slope();
+  
   // get temp and humidity
   byte temperature = 0;
   byte humidity = 0;
@@ -58,42 +62,42 @@ void loop() {
 
   // if there's an error
   if ((err = dht11.read(&temperature, &humidity, NULL)) != SimpleDHTErrSuccess) {
-    Serial.print("Read DHT11 failed, err=");
-    Serial.println(err);
+    // Serial.print("Read DHT11 failed, err=");
+    // Serial.println(err);
     delay(1000);
     return;
   }
 
-  // get air quality
-  // aq = aqs.slope();
+  if (inputString == "0" || prevString == "0") {
+    digitalWrite(A5, 0);
+  } else {
+    // print temperature
+    Serial.print("temperature:"); delay(10);
+    Serial.print((int)temperature); delay(10);
+    Serial.println(" *C, "); delay(10);
 
-  if (buttonClicked) {
-    if (inputString == "0") {
-      digitalWrite(A5, 0);
+    // print humidity
+    Serial.print("humidity:"); delay(10);
+    Serial.print((int)humidity); delay(10);
+    Serial.println(" H"); delay(10);
+
+    if ((int)humidity < userHumidity) {
+      Serial.print("Less than ");
+      digitalWrite(A5, HIGH);
     } else {
-      // print temperature
-      Serial.print("temperature:");
-      Serial.print((int)temperature);
-      Serial.println(" *C, ");
-
-      // print humidity
-      Serial.print("humidity:");
-      Serial.print((int)humidity);
-      Serial.println(" H");
-
-      if ((int)humidity < userHumidity) {
-        Serial.print("Less than ");
-        digitalWrite(A5, HIGH);
-      } else {
-        Serial.print("More than ");
-        digitalWrite(A5, LOW);
-      }
-
-      Serial.println(userHumidity);
+      Serial.print("More than ");
+      digitalWrite(A5, LOW);
     }
+
+    delay(10);
+    Serial.println(userHumidity);
+    delay(10);
   }
 
   // reset string and toggles
+  if (prevString != "0"){
+    prevString = inputString;
+  }
   inputString = "";
   buttonClicked = false;
   slided = false;
@@ -139,6 +143,7 @@ void loop() {
   //      prevValue = sensorValue;
 
   delay(2000); // give the Arduino some breathing room.
+  Serial.println();
 }
 
 int stringToInt() {
@@ -150,13 +155,13 @@ int stringToInt() {
 }
 
 ISR(TIMER2_OVF_vect) {
-    if(aqs.counter == 122) {//set 2 seconds as a detected duty
-        aqs.last_vol = aqs.first_vol;
-        aqs.first_vol = analogRead(A0); // change this value if you use another A port
-        aqs.counter = 0;
-        aqs.timer_index = 1;
-        PORTB = PORTB^0x20;
-    } else {
-        aqs.counter++;
-    }
+  if (aqs.counter == 122) { //set 2 seconds as a detected duty
+    aqs.last_vol = aqs.first_vol;
+    aqs.first_vol = analogRead(A0); // change this value if you use another A port
+    aqs.counter = 0;
+    aqs.timer_index = 1;
+    PORTB = PORTB ^ 0x20;
+  } else {
+    aqs.counter++;
+  }
 }
