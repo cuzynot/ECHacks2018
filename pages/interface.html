@@ -139,16 +139,22 @@ body, html {
 	function initSocketIO() {
 		iosocket = io.connect();
 		iosocket.on('onconnection', function(value) {
-		pollOneH = value.pollOneValue/2; // recieve start poll value from server
-		initPoll();
-		initButton();
-		initSlider();
+			console.log("IOSOCKET ON");
+			console.log("received " + value + " - onconnection");
+			pollOneH = value.pollOneValue/2; // recieve start poll value from server
+			initPoll();
+			initButton();
+			initSlider();
 
-		// recieve changed values by other client from server
-		iosocket.on('updateData', function (recievedData) {
-			pollOneH = recievedData.pollOneValue/2; // recieve start poll value from server
+			// recieve changed values by other client from server
+			iosocket.on('updateData', function (recievedData) {
+				console.log("received " + recievedData + " - updateData");
+				pollOneH = recievedData.pollOneValue/2; // recieve start poll value from server
+
+				// var content = canvas.getContext("2d");
+				// content.fillText('temperature: ' + potValue, text.x, text.y);
+			});
 		});
-	});
 	}
 
 	function initPoll() {

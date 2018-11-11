@@ -8,17 +8,14 @@ var fs = require('fs'),
 http = require('http'),
 socketio = require('socket.io'),
 url = require("url"),
-// SerialPort = require("serialport").SerialPort
 SerialPort = require('serialport')
 
 var serialPort
 
-
 // var sp = new SerialPort(portName,{baudRate:baud});
 
 // handle contains locations to browse to (vote and poll); pathnames.
-function startServer(route,handle,debug)
-{
+function startServer(route,handle,debug) {
 	// on request event
 	function onRequest(request, response) {
 	  // parse the requested url into pathname. pathname will be compared
@@ -63,8 +60,7 @@ function initSocketIO(httpServer,debug) {
 }
 
 // Listen to serial port
-function serialListener(debug)
-{
+function serialListener(debug) {
 	var receivedData = "";
 	serialPort = new SerialPort(portName, {
 		baudRate: 9600,
@@ -75,28 +71,34 @@ function serialListener(debug)
         flowControl: false
     });
 
-	serialPort.on("open", function () {
+	serialPort.on("open", function() {
 		console.log('open serial communication');
-            // Listens to incoming data
-            serialPort.on('data', function(data) {
-            	receivedData += data.toString();
-            	// if (receivedData.contains("B") && receivedData.contains("E")) {
-            	// 	sendData = receivedData.substring(receivedData.indexOf('B') + 1, receivedData.indexOf('E'));
-            	// 	console.log("temp " + sendData);
-            	// 	receivedData = '';
-            	// } else if (receivedData.contains("A") && receivedData.contains("C")) {
-            	// 	sendData = receivedData.substring(receivedData.indexOf('A') + 1, receivedData.indexOf('C'));
-            	// 	console.log("humi " + sendData);
-            	// 	receivedData = '';
-            	// } else if (receivedData.contains("F") && receivedData.contains("G")) {
-            	// 	sendData = receivedData.substring(receivedData.indexOf('F') + 1, receivedData.indexOf('G'));
-            	// 	console.log("sent " + sendData);
-            	// 	receivedData = '';
-            	// }
-         // send the incoming data to browser with websockets.
-         // socketServer.emit('update', sendData);
-     });  
-        }); 
+        // Listens to incoming data
+        serialPort.on('data', function(data) {
+        	// console.log("received (" + data + ")");
+        	// console.log("tostring (" + data.toString() + ")");
+
+        	receivedData += data.toString();
+        	if (receivedData.indexOf("B") >= 0 && receivedData.indexOf("E") >= 0) {
+        		sendData = receivedData.substring(receivedData.indexOf('B') + 1, receivedData.indexOf('E'));
+        		console.log("temp " + sendData);
+        		receivedData = receivedData.substring(receivedData.indexOf('E') + 1);
+        	} else if (receivedData.indexOf("A") >= 0 && receivedData.indexOf("C") >= 0) {
+        		sendData = receivedData.substring(receivedData.indexOf('A') + 1, receivedData.indexOf('C'));
+        		console.log("humi " + sendData);
+        		receivedData = receivedData.substring(receivedData.indexOf('C') + 1);
+        	} else if (receivedData.indexOf("F") >= 0 && receivedData.indexOf("G") >= 0) {
+        		sendData = receivedData.substring(receivedData.indexOf('F') + 1, receivedData.indexOf('G'));
+        		console.log("airq " + sendData);
+        		receivedData = receivedData.substring(receivedData.indexOf('G') + 1);
+        	}
+	        // send the incoming data to browser with websockets.
+	        if (sendData !== "") {
+		        // console.log("sent " + sendData);
+		        socketServer.emit('update', sendData);
+		    }
+     	});
+    }); 
 }
 
 exports.start = startServer;
