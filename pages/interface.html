@@ -88,7 +88,6 @@ body, html {
           window.setTimeout(callback, 1000 / 30); // 30 frames per second
       };
   })();
-
   // variables
   var iosocket;
   var text;
@@ -96,46 +95,40 @@ body, html {
   var canvas, content;
   var temp, humi, airq;
   var ctx, c;
-
   function animation(poll1,text) {
   	canvas = document.getElementById("myCanvas");
   	content = canvas.getContext("2d");
-
 	  // clear canvas
 	  // content.clearRect(0, 0, 460, 540);
 	  
 	  content.fillStyle = 'black';
 	  content.textAlign = 'center';
 	  content.font = '20pt Calibri';
-
 	  updateText();
-
           // render graph 
           // content.fillStyle = 'orange';
           // content.fillRect(poll1.x,(poll1.y-poll1.h),poll1.w,poll1.h);
-
           // content.fill();
 	}
-
 	function updateText() {
 		content.fillText('Temperature: ' + temp, 200, 100);
 		content.fillText('Humidity: ' + humi, 200, 200);
 		content.fillText('Air Quality: ' + airq, 200, 300);
 	}
-
 	function initSocketIO() {
 		canvas = document.getElementById("myCanvas");
 	  	content = canvas.getContext("2d");
+
+	  	// loading
+	  	content.fillText('Loading...', 200, 200);
 
 		iosocket = io.connect();
 		iosocket.on('onconnection', function(value) {
 			console.log("IOSOCKET ON");
 			console.log("received " + value + " - onconnection");
-
 			// initPoll();
 			initButton();
 			initSlider();
-
 			// receive changed values by other client from server
 			iosocket.on('updateData', function (receivedData) {
 				console.log("received " + receivedData + " - updateData");
@@ -146,17 +139,14 @@ body, html {
 				} else if (receivedData.charAt(0) == 'A'){
 					airq = parseInt(receivedData.substring(1));
 				}
-
 				// clear canvas
 	  			content.clearRect(0, 0, 460, 540);
 				updateText();
-
 				// var content = canvas.getContext("2d");
 				// content.fillText('temperature: ' + potValue, text.x, text.y);
 			});
 		});
 	}
-
 	function initPoll() {
 		// animation(poll1,text);
 	}
@@ -179,7 +169,6 @@ body, html {
 	window.onload = function() {
 		initSocketIO();
 	};
-
 	var datapoints = [
 	{x: 0, y: 100},
 	{x: 100, y: 120},
@@ -187,31 +176,24 @@ body, html {
 	{x: 320, y: 270},
 	{x: 460, y: 200},
 	];
-
 	function updateGraph() {
 		ctx.clearRect(0, 0, c.width, c.height);
 		ctx.beginPath();
-
 		ctx.moveTo(datapoints[0].x, datapoints[0].y);
-
 		for (var i = 1; i<datapoints.length; i++) {
 			ctx.lineTo(datapoints[i].x, datapoints[i].y);
 		}
-
 		ctx.stroke();
 	}
-
 	$(document).ready(function() {
 		$('#check').click(function() {
 			toggleVal += 1;
 			toggleVal %= 2;
 			iosocket.emit('buttonval',toggleVal);
 		});
-
 		c = document.getElementById('myCanvas');
 		ctx=c.getContext("2d");
-
-		updateGraph();
+		// updateGraph();
 	});
 </script>
 
@@ -225,7 +207,6 @@ body, html {
 </head>
 <body>
 	<div id="rData">
-		
 		<canvas id="myCanvas" width="460" height="540"></canvas>
 	</div>
 	<div id="sData">
