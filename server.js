@@ -1,6 +1,6 @@
 var socketServer;
 var SerialPort;
-var portName = '/dev/cu.usbmodem14201';
+var portName = '/dev/cu.usbmodem14101';
 // var portName = 'COM3'; 
 var sendData = "";
 
@@ -43,9 +43,12 @@ function initSocketIO(httpServer,debug) {
 		console.log("user connected");
 		socket.emit('onconnection', {pollOneValue:sendData});
 
-		socketServer.on('update', function(data) {
-			socket.emit('updateData',{pollOneValue:data});
-		});
+		setInterval(function () {
+			socket.emit('updateData',sendData);
+		}, 3000);
+		// socketServer.on('update', function(data) {
+		// 	socket.emit('updateData',{pollOneValue:data});
+		// });
 
 		socket.on('buttonval', function(data) {
 			serialPort.write(data + 'E');
@@ -75,9 +78,6 @@ function serialListener(debug) {
 		console.log('open serial communication');
         // Listens to incoming data
         serialPort.on('data', function(data) {
-        	// console.log("received (" + data + ")");
-        	// console.log("tostring (" + data.toString() + ")");
-
         	receivedData += data.toString();
         	if (receivedData.indexOf("B") >= 0 && receivedData.indexOf("E") >= 0) {
         		sendData = receivedData.substring(receivedData.indexOf('B') + 1, receivedData.indexOf('E'));
@@ -93,10 +93,10 @@ function serialListener(debug) {
         		receivedData = receivedData.substring(receivedData.indexOf('G') + 1);
         	}
 	        // send the incoming data to browser with websockets.
-	        if (sendData !== "") {
-		        // console.log("sent " + sendData);
-		        socketServer.emit('update', sendData);
-		    }
+	     //    if (sendData !== "") {
+		    //     // console.log("sent " + sendData);
+		    //     socketServer.emit('update', sendData);
+		    // }
      	});
     }); 
 }

@@ -97,10 +97,12 @@ body, html {
   var prevPotValue;
   //var onOff = false; 
   var toggleVal = 0;
+  var canvas;
+  var content;
 
   function animation(poll1,text) {
-  	var canvas = document.getElementById("myCanvas");
-  	var content = canvas.getContext("2d");
+  	canvas = document.getElementById("myCanvas");
+  	content = canvas.getContext("2d");
 
 	  // clear canvas
 	  // content.clearRect(0, 0, 460, 540);
@@ -115,25 +117,17 @@ body, html {
 	  	potValue = pollOneH*2;
 	  }
 
-	  content.fillText('temperature: ' + potValue, text.x, text.y);
+	  updateText();
 
           // render graph 
           // content.fillStyle = 'orange';
           // content.fillRect(poll1.x,(poll1.y-poll1.h),poll1.w,poll1.h);
 
           // content.fill();
+	}
 
-	  // request new frame
-	  requestAnimFrame(function() {
-	  	if(poll1.h < pollOneH){
-	  		poll1.h += (pollOneH - poll1.h)*.15;
-	  	}
-	  	else if(poll1.h > pollOneH){
-	  		poll1.h -= (poll1.h - pollOneH)*.15;
-	  	}
-	  	text.y = (poll1.y - poll1.h) - 5;
-	  	animation(poll1,text);
-	  });
+	function updateText() {
+		content.fillText('temperature: ' + potValue, 100, 100);
 	}
 
 	function initSocketIO() {
@@ -149,7 +143,12 @@ body, html {
 			// recieve changed values by other client from server
 			iosocket.on('updateData', function (recievedData) {
 				console.log("received " + recievedData + " - updateData");
-				pollOneH = recievedData.pollOneValue/2; // recieve start poll value from server
+
+				potValue = recievedData;
+
+				// clear canvas
+	  			content.clearRect(0, 0, 460, 540);
+				updateText();
 
 				// var content = canvas.getContext("2d");
 				// content.fillText('temperature: ' + potValue, text.x, text.y);
@@ -195,11 +194,11 @@ body, html {
 	var ctx, c;
 
 	var datapoints = [
-		{x: 0, y: 100},
-		{x: 100, y: 120},
-		{x: 250, y: 320},
-		{x: 320, y: 270},
-		{x: 460, y: 200},
+	{x: 0, y: 100},
+	{x: 100, y: 120},
+	{x: 250, y: 320},
+	{x: 320, y: 270},
+	{x: 460, y: 200},
 	];
 
 	function updateGraph() {
