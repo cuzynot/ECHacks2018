@@ -115,17 +115,17 @@ void loop() {
   humidity = random(30, 60);
   aq = random(0, 700);
 
-  Serial.print("B"); // begin character
+  Serial.print("T"); // begin character
   Serial.print(temperature);
-  Serial.print("E"); // end character
+  Serial.print("P"); // end character
 
-//  Serial.print("A"); // begin character
-//  Serial.print(humidity);
-//  Serial.print("C"); // end character
-//
-//  Serial.print("F"); // begin character
-//  Serial.print(aq);
-//  Serial.print("G"); // end character
+  Serial.print("H"); // begin character
+  Serial.print(humidity);
+  Serial.print("M"); // end character
+
+  Serial.print("A"); // begin character
+  Serial.print(aq);
+  Serial.print("Q"); // end character
 
   delay(2000);
   Serial.println();

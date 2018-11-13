@@ -1,14 +1,13 @@
 var socketServer;
-var SerialPort;
+var fs = require('fs');
+var http = require('http');
+var socketio = require('socket.io');
+var url = require("url");
+var SerialPort = require('serialport');
 var portName = '/dev/cu.usbmodem14101';
-// var portName = 'COM3'; 
-var sendData = "";
+// var portName = 'COM3';
 
-var fs = require('fs'),
-http = require('http'),
-socketio = require('socket.io'),
-url = require("url"),
-SerialPort = require('serialport')
+var temp, humi, airq;
 
 var serialPort
 
@@ -41,10 +40,12 @@ function initSocketIO(httpServer,debug) {
 	}
 	socketServer.on('connection', function (socket) {
 		console.log("user connected");
-		socket.emit('onconnection', {pollOneValue:sendData});
+		socket.emit('onconnection', {pollOneValue:temp});
 
 		setInterval(function () {
-			socket.emit('updateData',sendData);
+			socket.emit('updateData',temp);
+			socket.emit('updateData',humi);
+			socket.emit('updateData',airq);
 		}, 3000);
 		// socketServer.on('update', function(data) {
 		// 	socket.emit('updateData',{pollOneValue:data});
@@ -79,24 +80,23 @@ function serialListener(debug) {
         // Listens to incoming data
         serialPort.on('data', function(data) {
         	receivedData += data.toString();
-        	if (receivedData.indexOf("B") >= 0 && receivedData.indexOf("E") >= 0) {
-        		sendData = receivedData.substring(receivedData.indexOf('B') + 1, receivedData.indexOf('E'));
-        		console.log("temp " + sendData);
-        		receivedData = receivedData.substring(receivedData.indexOf('E') + 1);
-        	} else if (receivedData.indexOf("A") >= 0 && receivedData.indexOf("C") >= 0) {
-        		sendData = receivedData.substring(receivedData.indexOf('A') + 1, receivedData.indexOf('C'));
-        		console.log("humi " + sendData);
-        		receivedData = receivedData.substring(receivedData.indexOf('C') + 1);
-        	} else if (receivedData.indexOf("F") >= 0 && receivedData.indexOf("G") >= 0) {
-        		sendData = receivedData.substring(receivedData.indexOf('F') + 1, receivedData.indexOf('G'));
-        		console.log("airq " + sendData);
-        		receivedData = receivedData.substring(receivedData.indexOf('G') + 1);
+        	if (receivedData.indexOf("T") >= 0 && receivedData.indexOf("P") >= 0) {
+        		temp = receivedData.substring(receivedData.indexOf('T'), receivedData.indexOf('P'));
+        		console.log("temp " + temp);
+        		receivedData = receivedData.substring(receivedData.indexOf('P') + 1);
+
+        	} else if (receivedData.indexOf("H") >= 0 && receivedData.indexOf("M") >= 0) {
+        		humi = receivedData.substring(receivedData.indexOf('H'), receivedData.indexOf('M'));
+        		console.log("humi " + humi);
+        		receivedData = receivedData.substring(receivedData.indexOf('M') + 1);
+
+        	} else if (receivedData.indexOf("A") >= 0 && receivedData.indexOf("Q") >= 0) {
+        		airq = receivedData.substring(receivedData.indexOf('A'), receivedData.indexOf('Q'));
+        		console.log("airq " + airq);
+        		receivedData = receivedData.substring(receivedData.indexOf('Q') + 1);
         	}
 	        // send the incoming data to browser with websockets.
-	     //    if (sendData !== "") {
-		    //     // console.log("sent " + sendData);
-		    //     socketServer.emit('update', sendData);
-		    // }
+		    // socketServer.emit('update', sendData);
      	});
     }); 
 }
