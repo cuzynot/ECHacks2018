@@ -106,7 +106,7 @@
 			var temps = [];
 			var humis = [];
 			var airqs = [];
-			
+
 			var iosocket;
 			var text;
 			var toggleVal = 0;
@@ -152,28 +152,28 @@
 					initSlider();
 					// receive changed values by other client from server
 					iosocket.on('updateData', function (receivedData) {
-						
-						console.log("received " + receivedData + " - updateData");
 						if (receivedData.charAt(0) == 'T') {
 							temp = parseInt(receivedData.substring(1));
-							if (temp > 200){
+							if (temp > 200) {
 								temp -= 200;
 								console.log("temptemp " + temp);
 							}
+							temps.push(temp);
 						} else if (receivedData.charAt(0) == 'H') {
 							humi = parseInt(receivedData.substring(1));
+							humis.push(humi);
 						} else if (receivedData.charAt(0) == 'A') {
 							airq = parseInt(receivedData.substring(1));
+							airqs.push(airq);
 						}
-
-						temps.push(temp);
-						humis.push(humi);
-						airqs.push(airq);
 
 						// clear canvas
 						content.clearRect(0, 0, 1200, 540);
 						updateText();
-						updateGraph();
+
+						if (humis.length == humis.length && humis.length == airqs.length) {
+							updateGraph();
+						}
 					});
 				});
 			}
@@ -201,7 +201,7 @@
 			};
 
 			function updateText() {
-				if (toggleVal == 0){
+				if (toggleVal == 0) {
 					content.fillText("Off", 50, 50);
 				} else {
 					content.fillText("On", 50, 50);
@@ -212,13 +212,29 @@
 			}
 
 			function updateGraph() {
+				// draw temperature
+				ctx.strokeStyle = "#28d031";
 				ctx.beginPath();
 				for (var i = 0; i < temps.length; i++) {
 					ctx.lineTo(i * 10, 300 - temps[i]);
 				}
 				ctx.stroke();
 
-				// gx += 10;
+				// draw humidity
+				ctx.strokeStyle = "#a1d0ed";
+				ctx.beginPath();
+				for (var i = 0; i < humis.length; i++) {
+					ctx.lineTo(i * 10, 300 - humis[i]);
+				}
+				ctx.stroke();
+
+				// draw air quality
+				ctx.strokeStyle = "#2e3843";
+				ctx.beginPath();
+				for (var i = 0; i < airqs.length; i++) {
+					ctx.lineTo(i * 10, 300 - airqs[i] / 50);
+				}
+				ctx.stroke();
 			}
 			$(document).ready(function () {
 				$('#btnid').click(function () {
@@ -228,7 +244,6 @@
 				});
 				c = document.getElementById('myCanvas');
 				ctx = c.getContext("2d");
-				// updateGraph();
 			});
 		</script>
 
@@ -242,6 +257,9 @@
 	</head>
 
 	<body>
+		<div>
+			<img id="topimage" src="josh.jpg" width="500" height="600" alt="logo">
+		</div>
 		<div id="sData">
 			<h2 id="header">Myst Control Centre</h2>
 			<div id="btnHolder">
