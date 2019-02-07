@@ -38,6 +38,7 @@
 
 <body>
 
+
 	<!-- Navbar (sit on top) -->
 	<div class="w3-top">
 		<div class="w3-bar w3-white w3-card" id="myNavbar">
@@ -66,31 +67,32 @@
 				padding: 0px;
 			}
 
-			#rData {
-				float: left;
-				margin-left: 100px;
-				margin-right: auto;
-				width: 470px;
-			}
-
 			#sData {
 				float: left;
-				margin-left: 100px;
+				margin-left: 200px;
+				margin-right: auto;
+				width: 1000px;
+			}
+
+			#rData {
+				float: left;
+				margin-left: 50px;
 				margin-right: auto;
 				width: 470px;
+				padding: 50px;
 			}
 
 			h2 {
 				text-align: center;
 			}
 
-			#myCanvas {
-				border: 2px dashed grey;
-			}
-
 			#btnHolder,
 			#sliderTxt {
 				text-align: center;
+			}
+
+			#myCanvas {
+				border: 2px solid chocolate;
 			}
 		</style>
 		<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
@@ -131,15 +133,20 @@
 				// content.fill();
 			}
 			function updateText() {
-				content.fillText('Temperature: ' + temp, 200, 100);
-				content.fillText('Humidity: ' + humi, 200, 200);
-				content.fillText('Air Quality: ' + airq, 200, 300);
+				if (toggleVal == 0){
+					content.fillText("Off", 50, 50);
+				} else {
+					content.fillText("On", 50, 50);
+				}
+				content.fillText('Temperature: ' + temp, 50, 100);
+				content.fillText('Humidity: ' + humi, 50, 150);
+				content.fillText('Air Quality: ' + airq, 50, 200);
 			}
 			function initSocketIO() {
 				canvas = document.getElementById("myCanvas");
 				content = canvas.getContext("2d");
 				// loading
-				content.fillText('Loading...', 200, 200);
+				content.fillText('Loading...', 550, 300);
 				iosocket = io.connect();
 				iosocket.on('onconnection', function (value) {
 					console.log("IOSOCKET ON");
@@ -152,13 +159,17 @@
 						console.log("received " + receivedData + " - updateData");
 						if (receivedData.charAt(0) == 'T') {
 							temp = parseInt(receivedData.substring(1));
+							if (temp > 200){
+								temp -= 200;
+								console.log("temptemp " + temp);
+							}
 						} else if (receivedData.charAt(0) == 'H') {
 							humi = parseInt(receivedData.substring(1));
 						} else if (receivedData.charAt(0) == 'A') {
 							airq = parseInt(receivedData.substring(1));
 						}
 						// clear canvas
-						content.clearRect(0, 0, 460, 540);
+						content.clearRect(0, 0, 1200, 540);
 						updateText();
 						// var content = canvas.getContext("2d");
 						// content.fillText('temperature: ' + potValue, text.x, text.y);
@@ -225,9 +236,6 @@
 	</head>
 
 	<body>
-		<div id="rData">
-			<canvas id="myCanvas" width="460" height="540"></canvas>
-		</div>
 		<div id="sData">
 			<h2 id="header">Myst Control Centre</h2>
 			<div id="btnHolder">
@@ -235,14 +243,15 @@
 			</div>
 			<p id="sliderTxt">Desired Humidity</p>
 			<div id="slider" class="sld"></div>
-			Range
 			<div id="sliderValue">0</div>
+		</div>
+		<div id="rData">
+			<canvas id="myCanvas" width="1200" height="540"></canvas>
 		</div>
 
 		<style>
 			/* text css */
 			#header {
-				size: 100;
 				color: skyblue;
 			}
 
