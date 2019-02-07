@@ -32,7 +32,7 @@
 	}
 
 	.w3-bar .w3-button {
-		padding: 16px;
+		padding: 15px;
 	}
 </style>
 
@@ -76,10 +76,10 @@
 
 			#rData {
 				float: left;
-				margin-left: 50px;
+				margin-left: 80px;
 				margin-right: auto;
 				width: 470px;
-				padding: 50px;
+				padding: 20px;
 			}
 
 			h2 {
@@ -92,13 +92,28 @@
 			}
 
 			#myCanvas {
-				border: 2px solid chocolate;
+				border: 2px solid darkblue;
 			}
 		</style>
 		<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
 		<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
 		<script>
+
+			// variables
+			var gx = 0;
+			var gy = 0;
+			var temps = [];
+			var humis = [];
+			var airqs = [];
+			
+			var iosocket;
+			var text;
+			var toggleVal = 0;
+			var canvas, content;
+			var temp, humi, airq;
+			var ctx, c;
+
 			// canvas request for all browsers
 			window.requestAnimFrame = (function (callback) {
 				return window.requestAnimationFrame ||
@@ -110,13 +125,7 @@
 						window.setTimeout(callback, 1000 / 30); // 30 frames per second
 					};
 			})();
-			// variables
-			var iosocket;
-			var text;
-			var toggleVal = 0;
-			var canvas, content;
-			var temp, humi, airq;
-			var ctx, c;
+
 			function animation(poll1, text) {
 				canvas = document.getElementById("myCanvas");
 				content = canvas.getContext("2d");
@@ -127,21 +136,8 @@
 				content.textAlign = 'center';
 				content.font = '50pt Calibri';
 				updateText();
-				// render graph 
-				// content.fillStyle = 'orange';
-				// content.fillRect(poll1.x,(poll1.y-poll1.h),poll1.w,poll1.h);
-				// content.fill();
 			}
-			function updateText() {
-				if (toggleVal == 0){
-					content.fillText("Off", 50, 50);
-				} else {
-					content.fillText("On", 50, 50);
-				}
-				content.fillText('Temperature: ' + temp, 50, 100);
-				content.fillText('Humidity: ' + humi, 50, 150);
-				content.fillText('Air Quality: ' + airq, 50, 200);
-			}
+
 			function initSocketIO() {
 				canvas = document.getElementById("myCanvas");
 				content = canvas.getContext("2d");
@@ -156,6 +152,7 @@
 					initSlider();
 					// receive changed values by other client from server
 					iosocket.on('updateData', function (receivedData) {
+						
 						console.log("received " + receivedData + " - updateData");
 						if (receivedData.charAt(0) == 'T') {
 							temp = parseInt(receivedData.substring(1));
@@ -168,11 +165,15 @@
 						} else if (receivedData.charAt(0) == 'A') {
 							airq = parseInt(receivedData.substring(1));
 						}
+
+						temps.push(temp);
+						humis.push(humi);
+						airqs.push(airq);
+
 						// clear canvas
 						content.clearRect(0, 0, 1200, 540);
 						updateText();
-						// var content = canvas.getContext("2d");
-						// content.fillText('temperature: ' + potValue, text.x, text.y);
+						updateGraph();
 					});
 				});
 			}
@@ -198,21 +199,26 @@
 			window.onload = function () {
 				initSocketIO();
 			};
-			var datapoints = [
-				{ x: 0, y: 100 },
-				{ x: 100, y: 120 },
-				{ x: 250, y: 320 },
-				{ x: 320, y: 270 },
-				{ x: 460, y: 200 },
-			];
+
+			function updateText() {
+				if (toggleVal == 0){
+					content.fillText("Off", 50, 50);
+				} else {
+					content.fillText("On", 50, 50);
+				}
+				content.fillText('Temperature: ' + temp, 50, 100);
+				content.fillText('Humidity: ' + humi, 50, 150);
+				content.fillText('Air Quality: ' + airq, 50, 200);
+			}
+
 			function updateGraph() {
-				ctx.clearRect(0, 0, c.width, c.height);
 				ctx.beginPath();
-				ctx.moveTo(datapoints[0].x, datapoints[0].y);
-				for (var i = 1; i < datapoints.length; i++) {
-					ctx.lineTo(datapoints[i].x, datapoints[i].y);
+				for (var i = 0; i < temps.length; i++) {
+					ctx.lineTo(i * 10, 300 - temps[i]);
 				}
 				ctx.stroke();
+
+				// gx += 10;
 			}
 			$(document).ready(function () {
 				$('#btnid').click(function () {
@@ -246,7 +252,7 @@
 			<div id="sliderValue">0</div>
 		</div>
 		<div id="rData">
-			<canvas id="myCanvas" width="1200" height="540"></canvas>
+			<canvas id="myCanvas" width="1200" height="600"></canvas>
 		</div>
 
 		<style>
@@ -259,7 +265,7 @@
 			.btn {
 				border: none;
 				background-color: inherit;
-				padding: 14px 28px;
+				padding: 10px 20px;
 				font-size: 16px;
 				cursor: pointer;
 				display: inline-block;
