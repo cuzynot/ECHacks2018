@@ -4,8 +4,8 @@ var http = require('http');
 var socketio = require('socket.io');
 var url = require("url");
 var SerialPort = require('serialport');
-var portName = '/dev/cu.usbmodem14101';
-// var portName = 'COM3';
+// var portName = '/dev/cu.usbmodem14101';
+var portName = 'COM3';
 
 var temp, humi, airq;
 
@@ -82,17 +82,17 @@ function serialListener(debug) {
         	receivedData += data.toString();
         	if (receivedData.indexOf("T") >= 0 && receivedData.indexOf("P") >= 0) {
         		temp = receivedData.substring(receivedData.indexOf('T'), receivedData.indexOf('P'));
-        		console.log("temp " + temp);
+        		// console.log("temp " + temp);
         		receivedData = receivedData.substring(receivedData.indexOf('P') + 1);
 
         	} else if (receivedData.indexOf("H") >= 0 && receivedData.indexOf("M") >= 0) {
         		humi = receivedData.substring(receivedData.indexOf('H'), receivedData.indexOf('M'));
-        		console.log("humi " + humi);
+        		// console.log("humi " + humi);
         		receivedData = receivedData.substring(receivedData.indexOf('M') + 1);
 
         	} else if (receivedData.indexOf("A") >= 0 && receivedData.indexOf("Q") >= 0) {
         		airq = receivedData.substring(receivedData.indexOf('A'), receivedData.indexOf('Q'));
-        		console.log("airq " + airq);
+        		// console.log("airq " + airq);
         		receivedData = receivedData.substring(receivedData.indexOf('Q') + 1);
         	}
 	        // send the incoming data to browser with websockets.

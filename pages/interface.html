@@ -7,22 +7,35 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-body,h1,h2,h3,h4,h5,h6 {font-family: "Raleway", sans-serif}
-body, html {
-	height: 100%;
-	line-height: 1.8;
-}
-/* Full height image header */
-.bgimg-1 {
-	background-position: center;
-	background-size: cover;
-	background-image: url("h.jpg");
-	min-height: 100%;
-}
-.w3-bar .w3-button {
-	padding: 16px;
-}
+	body,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: "Raleway", sans-serif
+	}
+
+	body,
+	html {
+		height: 100%;
+		line-height: 1.8;
+	}
+
+	/* Full height image header */
+	.bgimg-1 {
+		background-position: center;
+		background-size: cover;
+		background-image: url("h.jpg");
+		min-height: 100%;
+	}
+
+	.w3-bar .w3-button {
+		padding: 16px;
+	}
 </style>
+
 <body>
 
 	<!-- Navbar (sit on top) -->
@@ -44,180 +57,250 @@ body, html {
 			</a>
 		</div>
 	</div>
-	<head>    
+
+	<head>
 		<link rel="stylesheet" href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css" />
 		<style>
-		body {
-			margin: 0px;
-			padding: 0px;
-		}
-		#rData{
-			float:left;
-			margin-left:100px;
-			margin-right:auto;
-			width:470px;
-		}
-		#sData{
-			float: left;
-			margin-left:100px;
-			margin-right:auto;
-			width:470px;
-		}
-		h2{
-			text-align:center;
-		}
-		#myCanvas {
-			border: 2px dashed grey;
-		}
-		#btnHolder, #sliderTxt{
-			text-align:center;
-		}
-	</style>
-	<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
-	<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
-	<script src="/socket.io/socket.io.js"></script>
-	<script>
-	// canvas request for all browsers
-	window.requestAnimFrame = (function(callback) {
-		return window.requestAnimationFrame || 
-		window.webkitRequestAnimationFrame || 
-		window.mozRequestAnimationFrame || 
-		window.oRequestAnimationFrame || 
-		window.msRequestAnimationFrame ||
-		function(callback) {
-          window.setTimeout(callback, 1000 / 30); // 30 frames per second
-      };
-  })();
-  // variables
-  var iosocket;
-  var text;
-  var toggleVal = 0;
-  var canvas, content;
-  var temp, humi, airq;
-  var ctx, c;
-  function animation(poll1,text) {
-  	canvas = document.getElementById("myCanvas");
-  	content = canvas.getContext("2d");
-	  // clear canvas
-	  // content.clearRect(0, 0, 460, 540);
-	  
-	  content.fillStyle = 'black';
-	  content.textAlign = 'center';
-	  content.font = '50pt Calibri';
-	  updateText();
-          // render graph 
-          // content.fillStyle = 'orange';
-          // content.fillRect(poll1.x,(poll1.y-poll1.h),poll1.w,poll1.h);
-          // content.fill();
-	}
-	function updateText() {
-		content.fillText('Temperature: ' + temp, 200, 100);
-		content.fillText('Humidity: ' + humi, 200, 200);
-		content.fillText('Air Quality: ' + airq, 200, 300);
-	}
-	function initSocketIO() {
-		canvas = document.getElementById("myCanvas");
-	  	content = canvas.getContext("2d");
-
-	  	// loading
-	  	content.fillText('Loading...', 200, 200);
-
-		iosocket = io.connect();
-		iosocket.on('onconnection', function(value) {
-			console.log("IOSOCKET ON");
-			console.log("received " + value + " - onconnection");
-			// initPoll();
-			initButton();
-			initSlider();
-			// receive changed values by other client from server
-			iosocket.on('updateData', function (receivedData) {
-				console.log("received " + receivedData + " - updateData");
-				if (receivedData.charAt(0) == 'T'){
-					temp = parseInt(receivedData.substring(1));
-				} else if (receivedData.charAt(0) == 'H'){
-					humi = parseInt(receivedData.substring(1));
-				} else if (receivedData.charAt(0) == 'A'){
-					airq = parseInt(receivedData.substring(1));
-				}
-				// clear canvas
-	  			content.clearRect(0, 0, 460, 540);
-				updateText();
-				// var content = canvas.getContext("2d");
-				// content.fillText('temperature: ' + potValue, text.x, text.y);
-			});
-		});
-	}
-	function initPoll() {
-		// animation(poll1,text);
-	}
-	
-	function initButton(){
-		$( "#check" ).button();
-	}
-	
-	function initSlider() {
-		$( "#slider" ).slider({
-			min:0,
-			max:100,
-			change: function(event,ui) {
-				iosocket.emit('sliderval',ui.value);
-				document.getElementById('sliderValue').innerHTML = ui.value;
+			body {
+				margin: 0px;
+				padding: 0px;
 			}
-		});
-	}
-	
-	window.onload = function() {
-		initSocketIO();
-	};
-	var datapoints = [
-	{x: 0, y: 100},
-	{x: 100, y: 120},
-	{x: 250, y: 320},
-	{x: 320, y: 270},
-	{x: 460, y: 200},
-	];
-	function updateGraph() {
-		ctx.clearRect(0, 0, c.width, c.height);
-		ctx.beginPath();
-		ctx.moveTo(datapoints[0].x, datapoints[0].y);
-		for (var i = 1; i<datapoints.length; i++) {
-			ctx.lineTo(datapoints[i].x, datapoints[i].y);
-		}
-		ctx.stroke();
-	}
-	$(document).ready(function() {
-		$('#check').click(function() {
-			toggleVal += 1;
-			toggleVal %= 2;
-			iosocket.emit('buttonval',toggleVal);
-		});
-		c = document.getElementById('myCanvas');
-		ctx=c.getContext("2d");
-		// updateGraph();
-	});
-</script>
+
+			#rData {
+				float: left;
+				margin-left: 100px;
+				margin-right: auto;
+				width: 470px;
+			}
+
+			#sData {
+				float: left;
+				margin-left: 100px;
+				margin-right: auto;
+				width: 470px;
+			}
+
+			h2 {
+				text-align: center;
+			}
+
+			#myCanvas {
+				border: 2px dashed grey;
+			}
+
+			#btnHolder,
+			#sliderTxt {
+				text-align: center;
+			}
+		</style>
+		<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
+		<script src="http://code.jquery.com/ui/1.9.2/jquery-ui.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+			// canvas request for all browsers
+			window.requestAnimFrame = (function (callback) {
+				return window.requestAnimationFrame ||
+					window.webkitRequestAnimationFrame ||
+					window.mozRequestAnimationFrame ||
+					window.oRequestAnimationFrame ||
+					window.msRequestAnimationFrame ||
+					function (callback) {
+						window.setTimeout(callback, 1000 / 30); // 30 frames per second
+					};
+			})();
+			// variables
+			var iosocket;
+			var text;
+			var toggleVal = 0;
+			var canvas, content;
+			var temp, humi, airq;
+			var ctx, c;
+			function animation(poll1, text) {
+				canvas = document.getElementById("myCanvas");
+				content = canvas.getContext("2d");
+				// clear canvas
+				// content.clearRect(0, 0, 460, 540);
+
+				content.fillStyle = 'black';
+				content.textAlign = 'center';
+				content.font = '50pt Calibri';
+				updateText();
+				// render graph 
+				// content.fillStyle = 'orange';
+				// content.fillRect(poll1.x,(poll1.y-poll1.h),poll1.w,poll1.h);
+				// content.fill();
+			}
+			function updateText() {
+				content.fillText('Temperature: ' + temp, 200, 100);
+				content.fillText('Humidity: ' + humi, 200, 200);
+				content.fillText('Air Quality: ' + airq, 200, 300);
+			}
+			function initSocketIO() {
+				canvas = document.getElementById("myCanvas");
+				content = canvas.getContext("2d");
+				// loading
+				content.fillText('Loading...', 200, 200);
+				iosocket = io.connect();
+				iosocket.on('onconnection', function (value) {
+					console.log("IOSOCKET ON");
+					console.log("received " + value + " - onconnection");
+					// initPoll();
+					initButton();
+					initSlider();
+					// receive changed values by other client from server
+					iosocket.on('updateData', function (receivedData) {
+						console.log("received " + receivedData + " - updateData");
+						if (receivedData.charAt(0) == 'T') {
+							temp = parseInt(receivedData.substring(1));
+						} else if (receivedData.charAt(0) == 'H') {
+							humi = parseInt(receivedData.substring(1));
+						} else if (receivedData.charAt(0) == 'A') {
+							airq = parseInt(receivedData.substring(1));
+						}
+						// clear canvas
+						content.clearRect(0, 0, 460, 540);
+						updateText();
+						// var content = canvas.getContext("2d");
+						// content.fillText('temperature: ' + potValue, text.x, text.y);
+					});
+				});
+			}
+			function initPoll() {
+				// animation(poll1,text);
+			}
+
+			function initButton() {
+				$("#check").button();
+			}
+
+			function initSlider() {
+				$("#slider").slider({
+					min: 0,
+					max: 100,
+					change: function (event, ui) {
+						iosocket.emit('sliderval', ui.value);
+						document.getElementById('sliderValue').innerHTML = ui.value;
+					}
+				});
+			}
+
+			window.onload = function () {
+				initSocketIO();
+			};
+			var datapoints = [
+				{ x: 0, y: 100 },
+				{ x: 100, y: 120 },
+				{ x: 250, y: 320 },
+				{ x: 320, y: 270 },
+				{ x: 460, y: 200 },
+			];
+			function updateGraph() {
+				ctx.clearRect(0, 0, c.width, c.height);
+				ctx.beginPath();
+				ctx.moveTo(datapoints[0].x, datapoints[0].y);
+				for (var i = 1; i < datapoints.length; i++) {
+					ctx.lineTo(datapoints[i].x, datapoints[i].y);
+				}
+				ctx.stroke();
+			}
+			$(document).ready(function () {
+				$('#btnid').click(function () {
+					toggleVal += 1;
+					toggleVal %= 2;
+					iosocket.emit('buttonval', toggleVal);
+				});
+				c = document.getElementById('myCanvas');
+				ctx = c.getContext("2d");
+				// updateGraph();
+			});
+		</script>
 
 
 
-<body>
-	<div id="chartContainer" style="height: 300px; width: 100%;"></div>
-	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-</body>
+	<body>
+		<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+		<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+	</body>
 
-</head>
-<body>
-	<div id="rData">
-		<canvas id="myCanvas" width="460" height="540"></canvas>
-	</div>
-	<div id="sData">
-		<h2>Data to Arduino</h2>
-		<div id="btnHolder">
-			<button id="check">On/Off</button>
+	</head>
+
+	<body>
+		<div id="rData">
+			<canvas id="myCanvas" width="460" height="540"></canvas>
 		</div>
-		<p id="sliderTxt">Humidity</p>
-		<div id="slider"></div>
-		Range
-		<div id="sliderValue">0</div>
-	</div> 
-</body>
+		<div id="sData">
+			<h2 id="header">Myst Control Centre</h2>
+			<div id="btnHolder">
+				<button id="btnid" class="btn info"> On/Off</button>
+			</div>
+			<p id="sliderTxt">Desired Humidity</p>
+			<div id="slider" class="sld"></div>
+			Range
+			<div id="sliderValue">0</div>
+		</div>
+
+		<style>
+			/* text css */
+			#header {
+				size: 100;
+				color: skyblue;
+			}
+
+			/* button css */
+			.btn {
+				border: none;
+				background-color: inherit;
+				padding: 14px 28px;
+				font-size: 16px;
+				cursor: pointer;
+				display: inline-block;
+			}
+
+			/* Blue */
+			.info {
+				color: dodgerblue;
+			}
+
+			.info:hover {
+				background: #2196F3;
+				color: white;
+			}
+
+			.default:hover {
+				background: #e7e7e7;
+			}
+
+			/* slider css
+			.sld {
+				-webkit-appearance: none;
+				width: 100%;
+				background: #d3d3d3;
+				outline: none;
+				opacity: 0.7;
+				-webkit-transition: .2s;
+				transition: opacity .2s;
+			}
+
+			.sld:hover {
+				opacity: 1;
+			}
+
+			.sld::-webkit-slider-thumb {
+				-webkit-appearance: none;
+				appearance: none;
+				width: 25px;
+				height: 25px;
+				background: #4CAF50;
+				cursor: pointer;
+			}
+
+			.sld::-moz-range-thumb {
+				width: 25px;
+				height: 25px;
+				background: #4CAF50;
+				cursor: pointer;
+			} */
+		</style>
+	</body>
+
 </html>
