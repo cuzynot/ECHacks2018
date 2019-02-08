@@ -85,12 +85,14 @@ function serialListener(debug) {
         		// console.log("temp " + temp);
         		receivedData = receivedData.substring(receivedData.indexOf('P') + 1);
 
-        	} else if (receivedData.indexOf("H") >= 0 && receivedData.indexOf("M") >= 0) {
+			}
+			if (receivedData.indexOf("H") >= 0 && receivedData.indexOf("M") >= 0) {
         		humi = receivedData.substring(receivedData.indexOf('H'), receivedData.indexOf('M'));
         		// console.log("humi " + humi);
         		receivedData = receivedData.substring(receivedData.indexOf('M') + 1);
 
-        	} else if (receivedData.indexOf("A") >= 0 && receivedData.indexOf("Q") >= 0) {
+			}
+			if (receivedData.indexOf("A") >= 0 && receivedData.indexOf("Q") >= 0) {
         		airq = receivedData.substring(receivedData.indexOf('A'), receivedData.indexOf('Q'));
         		// console.log("airq " + airq);
         		receivedData = receivedData.substring(receivedData.indexOf('Q') + 1);

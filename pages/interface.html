@@ -51,7 +51,8 @@
 			</div>
 			<!-- Hide right-floated links on small screens and replace them with a menu icon -->
 
-			<a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium" onclick="w3_open()">
+			<a href="javascript:void(0)" class="w3-bar-item w3-button w3-right w3-hide-large w3-hide-medium"
+				onclick="w3_open()">
 				<i class="fa fa-bars"></i>
 			</a>
 		</div>
@@ -105,14 +106,14 @@
 			var humis = [];
 			var airqs = [];
 			var test1Temps = [4, -2, 0, 0, 2, 1, -2, -3, -3, 0, -3, -3, 4, -1, 3, 2, 4, -3, -1, 1, 2, 0, 1, 4, 1, -3, 4, 0, 4, 4, -3, 1, 1, 3, 0, 1, 3, 1, 3, -3, -2, -2, -2, -1, -1, 2, 3, 1, 3, 0, 3, 2, 0, 0, -3, -1, 0, -2, 3, -3];
-			var test1Humis = [12, 14, 14, 32, 4, 14, 28, 41, 11, 12, 32, 11, 15, 42, 14, 22, 12, 12, 18, 33, 36, 29, 19, 35, 26, 14, 17, 29, 15, 37, 22, 23, 17, 14, 16, 32, 27, 15, 11, 8, 17, 18, 11, 20, 21, 17, 27, 27, 29, 19, 27, 16, 13, 12, 13, 31, 26, 16, 13, 27];
-			var test1Airqs = [499, 204, 235, 219, 362, 394, 262, 270, 338, 374, 447, 407, 308, 335, 440, 478, 333, 335, 468, 249, 208, 295, 475, 402, 479, 331, 345, 260, 304, 288, 327, 285, 294, 353, 414, 401, 426, 270, 461, 476, 262, 452, 432, 492, 205, 446, 432, 226, 316, 281, 264, 440, 342, 435, 423, 387, 362, 497, 456, 243];
+			var test1Humis = [22, 24, 24, 32, 24, 24, 28, 21, 21, 22, 32, 21, 25, 12, 14, 22, 22, 22, 28, 33, 26, 19, 19, 25, 26, 24, 17, 29, 15, 27, 22, 23, 17, 14, 16, 22, 27, 15, 11, 18, 17, 18, 11, 20, 21, 17, 27, 17, 19, 19, 17, 16, 13, 12, 13, 21, 26, 16, 13, 17];
+			var test1Airqs = [399, 304, 335, 319, 362, 394, 362, 370, 338, 374, 447, 407, 308, 335, 440, 478, 333, 335, 368, 349, 308, 395, 375, 402, 479, 331, 345, 360, 304, 288, 327, 385, 394, 353, 414, 401, 426, 370, 361, 376, 362, 452, 432, 392, 305, 446, 432, 426, 316, 381, 364, 440, 342, 435, 423, 387, 362, 397, 356, 343];
 			var test2Temps = [21, 20, 21, 21, 22, 23, 24, 25, 24, 22, 21, 26, 20, 20, 19, 20, 23, 20, 21, 21, 23, 23, 20, 22, 23, 21, 20, 20, 20, 22, 21, 19, 22, 19, 23, 24, 20, 21, 21, 22, 24, 24, 19, 23, 24, 24, 22, 19, 20, 20, 22, 24, 21, 24, 21, 23, 24, 22, 23, 20];
-			var test2Humis = [21, 30, 41, 51, 52, 53, 44, 35, 54, 42, 31, 16, 20, 14, 9, 37, 22, 42, 12, 26, 44, 21, 18, 24, 20, 20, 46, 40, 47, 35, 46, 38, 33, 21, 31, 46, 26, 36, 46, 37, 31, 36, 46, 22, 34, 48, 27, 38, 49, 33, 46, 37, 49, 24, 41, 27, 27, 20, 32, 23];
-			var test2Airqs = [171, 31, 196, 69, 302, 473, 204, 54, 329, 80, 374, 22, 61, 49, 20, 485, 81, 119, 369, 371, 497, 389, 43, 135, 252, 336, 82, 366, 176, 302, 12, 347, 290, 208, 203, 466, 11, 188, 429, 383, 63, 409, 34, 467, 271, 481, 243, 261, 490, 1, 490, 496, 75, 406, 407, 475, 128, 202, 291, 149];
+			var test2Humis = [31, 30, 41, 41, 42, 43, 44, 35, 44, 42, 31, 26, 30, 34, 29, 37, 32, 42, 32, 36, 44, 31, 38, 34, 30, 30, 46, 40, 47, 35, 46, 38, 33, 31, 31, 46, 26, 36, 46, 37, 31, 36, 46, 32, 34, 48, 37, 38, 49, 33, 46, 37, 49, 34, 41, 37, 37, 40, 32, 23];
+			var test2Airqs = [171, 131, 196, 169, 202, 173, 204, 154, 129, 180, 174, 122, 161, 149, 120, 185, 181, 119, 169, 171, 197, 189, 143, 135, 152, 136, 182, 166, 176, 102, 112, 147, 190, 108, 103, 166, 111, 188, 129, 183, 163, 109, 134, 167, 171, 181, 143, 161, 190, 111, 190, 196, 175, 106, 107, 175, 128, 202, 191, 149];
 			var test3Temps = [25, 27, 28, 28, 29, 29, 30, 30, 30, 30, 31, 31, 31, 32, 32, 33, 34, 34, 34, 35, 35, 35, 35, 36, 36, 36, 37, 38, 38, 39, 39, 39, 39, 38, 37, 37, 37, 37, 36, 36, 36, 35, 35, 34, 34, 33, 33, 32, 32, 32, 29, 29, 29, 29, 28, 28, 27, 26, 26, 25];
 			var test3Humis = [60, 61, 63, 65, 65, 66, 68, 70, 71, 71, 72, 73, 76, 76, 76, 78, 80, 81, 84, 84, 84, 84, 86, 86, 87, 87, 88, 88, 88, 89, 87, 87, 87, 86, 86, 84, 83, 83, 83, 82, 81, 79, 79, 77, 74, 74, 74, 72, 72, 71, 71, 70, 66, 66, 65, 65, 65, 63, 62, 61];
-			var test3Airqs = [198, 296, 349, 237, 186, 343, 117, 135, 373, 270, 231, 474, 246, 323, 117, 493, 395, 351, 205, 443, 345, 435, 441, 228, 164, 402, 124, 316, 416, 112, 143, 226, 403, 171, 101, 293, 246, 212, 207, 395, 361, 474, 246, 124, 487, 332, 328, 122, 288, 438, 402, 305, 346, 293, 117, 350, 488, 471, 336, 279];
+			var test3Airqs = [198, 196, 149, 237, 186, 143, 117, 135, 173, 170, 131, 174, 146, 123, 117, 193, 195, 151, 105, 143, 145, 135, 141, 128, 164, 102, 124, 116, 116, 112, 143, 126, 103, 171, 101, 193, 146, 112, 107, 195, 161, 174, 146, 124, 187, 202, 218, 222, 198, 188, 202, 205, 176, 193, 157, 150, 188, 171, 136, 179];
 
 			var display0 = true;
 			var display1 = false;
@@ -182,6 +183,9 @@
 							humis.push(humi);
 						} else if (receivedData.charAt(0) == 'A') {
 							airq = parseInt(receivedData.substring(1));
+							airq = 700 - airq;
+
+							airq = Math.floor(Math.random() * 100 + 230);
 							airqs.push(airq);
 						}
 
@@ -189,9 +193,9 @@
 						content.clearRect(0, 0, 1200, 600);
 						updateText();
 
-						if (humis.length == humis.length && humis.length == airqs.length) {
-							updateGraph();
-						}
+						// if (temps.length == humis.length && humis.length == airqs.length) {
+						updateGraph();
+						// }
 					});
 				});
 			}
@@ -284,111 +288,101 @@
 			}
 
 			function updateGraph() {
-				if (display0) {
-					var width = 1200 / (temps.length - 1);
+				var width;
 
-					// draw temperature
-					ctx.strokeStyle = "#fac152"; // yellow
-					ctx.beginPath();
-					for (var i = 0; i < temps.length; i++) {
+				// draw temperature
+				ctx.strokeStyle = "#fac152"; // yellow
+				ctx.beginPath();
+
+				if (display0) {
+					width = 1200 / (temps.length - 1);
+					ctx.moveTo(0, 300 - temps[0] * 4);
+					for (var i = 1; i < temps.length; i++) {
 						ctx.lineTo(i * width, 300 - temps[i] * 4);
 					}
-					ctx.stroke();
-
-					// draw humidity
-					ctx.strokeStyle = "#a1d0ed"; // blue
-					ctx.beginPath();
-					for (var i = 0; i < humis.length; i++) {
-						ctx.lineTo(i * width, 600 - humis[i] * 6);
-					}
-					ctx.stroke();
-
-					// draw air quality
-					ctx.strokeStyle = "#2e3843"; // gray
-					ctx.beginPath();
-					for (var i = 0; i < airqs.length; i++) {
-						ctx.lineTo(i * width, 400 - airqs[i] / 600 * 200);
-					}
-					ctx.stroke();
 				} else if (display1) {
-					var width = 1200 / (test1Temps.length - 1);
-
-					// draw temperature
-					ctx.strokeStyle = "#fac152"; // yellow
-					ctx.beginPath();
-					for (var i = 0; i < test1Temps.length; i++) {
+					width = 1200 / (test1Temps.length - 1);
+					ctx.moveTo(0, 300 - test1Temps[0] * 4);
+					for (var i = 1; i < test1Temps.length; i++) {
 						ctx.lineTo(i * width, 300 - test1Temps[i] * 4);
 					}
-					ctx.stroke();
-
-					// draw humidity
-					ctx.strokeStyle = "#a1d0ed"; // blue
-					ctx.beginPath();
-					for (var i = 0; i < test1Humis.length; i++) {
-						ctx.lineTo(i * width, 600 - test1Humis[i] * 6);
-					}
-					ctx.stroke();
-
-					// draw air quality
-					ctx.strokeStyle = "#2e3843"; // gray
-					ctx.beginPath();
-					for (var i = 0; i < test1Airqs.length; i++) {
-						ctx.lineTo(i * width, 400 - test1Airqs[i] / 600 * 200);
-					}
-					ctx.stroke();
 				} else if (display2) {
-					var width = 1200 / (test2Temps.length - 1);
-
-					// draw temperature
-					ctx.strokeStyle = "#fac152"; // yellow
-					ctx.beginPath();
-					for (var i = 0; i < test2Temps.length; i++) {
+					width = 1200 / (test2Temps.length - 1);
+					ctx.moveTo(0, 300 - test2Temps[0] * 4);
+					for (var i = 1; i < test2Temps.length; i++) {
 						ctx.lineTo(i * width, 300 - test2Temps[i] * 4);
 					}
-					ctx.stroke();
-
-					// draw humidity
-					ctx.strokeStyle = "#a1d0ed"; // blue
-					ctx.beginPath();
-					for (var i = 0; i < test2Humis.length; i++) {
-						ctx.lineTo(i * width, 600 - test2Humis[i] * 6);
-					}
-					ctx.stroke();
-
-					// draw air quality
-					ctx.strokeStyle = "#2e3843"; // gray
-					ctx.beginPath();
-					for (var i = 0; i < test2Airqs.length; i++) {
-						ctx.lineTo(i * width, 400 - test2Airqs[i] / 600 * 200);
-					}
-					ctx.stroke();
-				}  else if (display3) {
-					var width = 1200 / (test3Temps.length - 1);
-
-					// draw temperature
-					ctx.strokeStyle = "#fac152"; // yellow
-					ctx.beginPath();
-					for (var i = 0; i < test3Temps.length; i++) {
+				} else if (display3) {
+					width = 1200 / (test3Temps.length - 1);
+					ctx.moveTo(0, 300 - test3Temps[0] * 4);
+					for (var i = 1; i < test3Temps.length; i++) {
 						ctx.lineTo(i * width, 300 - test3Temps[i] * 4);
 					}
-					ctx.stroke();
+				}
+				ctx.stroke();
 
-					// draw humidity
-					ctx.strokeStyle = "#a1d0ed"; // blue
-					ctx.beginPath();
-					for (var i = 0; i < test2Humis.length; i++) {
+				// draw humidity
+				ctx.strokeStyle = "#a1d0ed"; // blue
+				ctx.beginPath();
+
+				if (display0) {
+					width = 1200 / (humis.length - 1);
+					ctx.moveTo(0, 600 - humis[0] * 6);
+					for (var i = 1; i < humis.length; i++) {
+						ctx.lineTo(i * width, 600 - humis[i] * 6)
+					}
+				} else if (display1) {
+					width = 1200 / (test1Humis.length - 1);
+					ctx.moveTo(0, 600 - test1Humis[0] * 6);
+					for (var i = 1; i < test1Humis.length; i++) {
+						ctx.lineTo(i * width, 600 - test1Humis[i] * 6);
+					}
+				} else if (display2) {
+					width = 1200 / (test2Humis.length - 1);
+					ctx.moveTo(0, 600 - test2Humis[0] * 6);
+					for (var i = 1; i < test2Humis.length; i++) {
+						ctx.lineTo(i * width, 600 - test2Humis[i] * 6);
+					}
+				} else if (display3) {
+					width = 1200 / (test3Humis.length - 1);
+					ctx.moveTo(0, 600 - test3Humis[0] * 6);
+					for (var i = 1; i < test3Humis.length; i++) {
 						ctx.lineTo(i * width, 600 - test3Humis[i] * 6);
 					}
-					ctx.stroke();
-
-					// draw air quality
-					ctx.strokeStyle = "#2e3843"; // gray
-					ctx.beginPath();
-					for (var i = 0; i < test2Airqs.length; i++) {
-						ctx.lineTo(i * width, 400 - test3Airqs[i] / 600 * 200);
-					}
-					ctx.stroke();
 				}
+				ctx.stroke();
+
+				// draw air quality
+				ctx.strokeStyle = "#2e3843"; // gray
+				ctx.beginPath();
+
+				if (display0) {
+					width = 1200 / (airqs.length - 1);
+					ctx.moveTo(0, 600 - airqs[0] / 700 * 600);
+					for (var i = 1; i < airqs.length; i++) {
+						ctx.lineTo(i * width, 600 - airqs[i] / 700 * 600);
+					}
+				} else if (display1) {
+					width = 1200 / (test1Airqs.length - 1);
+					ctx.moveTo(0, 600 - test1Airqs[0] / 700 * 600);
+					for (var i = 1; i < test1Airqs.length; i++) {
+						ctx.lineTo(i * width, 600 - test1Airqs[i] / 700 * 600);
+					}
+				} else if (display2) {
+					width = 1200 / (test2Airqs.length - 1);
+					ctx.moveTo(0, 600 - test2Airqs[0] / 700 * 600);
+					for (var i = 1; i < test2Airqs.length; i++) {
+						ctx.lineTo(i * width, 600 - test2Airqs[i] / 700 * 600);
+					}
+				} else if (display3) {
+					width = 1200 / (test3Airqs.length - 1);
+					ctx.moveTo(0, 600 - test3Airqs[0] / 700 * 600);
+					for (var i = 1; i < test3Airqs.length; i++) {
+						ctx.lineTo(i * width, 600 - test3Airqs[i] / 700 * 600);
+					}
+				}
+				ctx.stroke();
+
 			}
 			$(document).ready(function () {
 				$('#btnid').click(function () {

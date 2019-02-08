@@ -36,9 +36,6 @@ void setup() {
 
   // init air quality sensor
   aqs.init(A0);
-
-  // testing
-  randomSeed(analogRead(0));
 }
 
 void loop() {
@@ -68,7 +65,7 @@ void loop() {
   aq = aqs.slope();
   if ((err = dht11.read(&temperature, &humidity, NULL)) != SimpleDHTErrSuccess) {
     //    Serial.print("Read DHT11 failed, err=");
-    Serial.println("err");
+    Serial.println(err);
     delay(1000);
     // return;
   }
