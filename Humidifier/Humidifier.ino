@@ -68,7 +68,7 @@ void loop() {
   aq = aqs.slope();
   if ((err = dht11.read(&temperature, &humidity, NULL)) != SimpleDHTErrSuccess) {
     //    Serial.print("Read DHT11 failed, err=");
-    //    Serial.println(err);
+    Serial.println("err");
     delay(1000);
     // return;
   }
@@ -86,11 +86,6 @@ void loop() {
     // turn Myst off
     digitalWrite(A5, LOW);
   }
-
-  // TESTING
-  temperature = random(-30, 40);
-  humidity = random(30, 60);
-  aq = random(0, 700);
 
   // print temperature
   Serial.print("T"); // begin character

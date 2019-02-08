@@ -40,7 +40,7 @@
 	<!-- Navbar (sit on top) -->
 	<div class="w3-top">
 		<div class="w3-bar w3-white w3-card" id="myNavbar">
-			<a href="site.html" class="w3-bar-item w3-button w3-wide">LOGO</a>
+			<a href="site.html" class="w3-bar-item w3-button w3-wide">MYST</a>
 			<!-- Right-sided navbar links -->
 			<div class="w3-right w3-hide-small">
 				<a href="#about" class="w3-bar-item w3-button">ABOUT</a>
@@ -90,7 +90,7 @@
 			}
 
 			#myCanvas {
-				border: 2px solid darkblue;
+				border: 1px solid darkblue;
 			}
 		</style>
 		<script src="http://code.jquery.com/jquery-1.8.3.js"></script>
@@ -152,12 +152,12 @@
 
 			function initSocketIO() {
 				canvas = document.getElementById("myCanvas");
+				content = canvas.getContext("2d");
 				canvas.width = 1200;
 				canvas.height = 600;
 				// canvas.style.width = 4800;
 				// canvas.style.height = 2400;
 
-				content = canvas.getContext("2d");
 				// loading
 				content.fillText('Loading...', 550, 300);
 				iosocket = io.connect();
@@ -444,7 +444,7 @@
 		</div>
 
 		<div class="dropdown">
-			<button onclick="myFunction()" class="dropbtn">Record</button>
+			<button onclick="myFunction()" class="dropbtn">Recorded Data</button>
 			<div id="myDropdown" class="dropdown-content">
 				<button id="btnid0" class="btn info">--Today--</button>
 				<button id="btnid1" class="btn info">02/05/19</button>

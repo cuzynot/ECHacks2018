@@ -5,7 +5,7 @@ var socketio = require('socket.io');
 var url = require("url");
 var SerialPort = require('serialport');
 // var portName = '/dev/cu.usbmodem14101';
-var portName = 'COM3';
+var portName = 'COM1';
 
 var temp, humi, airq;
 
