@@ -37,8 +37,6 @@
 </style>
 
 <body>
-
-
 	<!-- Navbar (sit on top) -->
 	<div class="w3-top">
 		<div class="w3-bar w3-white w3-card" id="myNavbar">
@@ -106,6 +104,20 @@
 			var temps = [];
 			var humis = [];
 			var airqs = [];
+			var test1Temps = [4, -2, 0, 0, 2, 1, -2, -3, -3, 0, -3, -3, 4, -1, 3, 2, 4, -3, -1, 1, 2, 0, 1, 4, 1, -3, 4, 0, 4, 4, -3, 1, 1, 3, 0, 1, 3, 1, 3, -3, -2, -2, -2, -1, -1, 2, 3, 1, 3, 0, 3, 2, 0, 0, -3, -1, 0, -2, 3, -3];
+			var test1Humis = [24, 26, 26, 44, 16, 26, 40, 53, 23, 24, 44, 23, 27, 54, 26, 34, 24, 24, 30, 45, 48, 41, 31, 47, 38, 26, 29, 41, 27, 49, 34, 35, 29, 26, 28, 44, 39, 27, 23, 20, 29, 30, 23, 32, 33, 29, 39, 39, 41, 31, 39, 28, 25, 24, 25, 43, 38, 28, 25, 39];
+			var test1Airqs = [499, 204, 235, 219, 362, 394, 262, 270, 338, 374, 447, 407, 308, 335, 440, 478, 333, 335, 468, 249, 208, 295, 475, 402, 479, 331, 345, 260, 304, 288, 327, 285, 294, 353, 414, 401, 426, 270, 461, 476, 262, 452, 432, 492, 205, 446, 432, 226, 316, 281, 264, 440, 342, 435, 423, 387, 362, 497, 456, 243];
+			var test2Temps = [21, 20, 21, 21, 22, 23, 24, 25, 24, 22, 21, 26, 20, 20, 19, 20, 23, 20, 21, 21, 23, 23, 20, 22, 23, 21, 20, 20, 20, 22, 21, 19, 22, 19, 23, 24, 20, 21, 21, 22, 24, 24, 19, 23, 24, 24, 22, 19, 20, 20, 22, 24, 21, 24, 21, 23, 24, 22, 23, 20];
+			var test2Humis = [41, 50, 61, 71, 72, 73, 64, 55, 74, 62, 51, 36, 40, 34, 29, 57, 42, 62, 32, 46, 64, 41, 38, 44, 40, 40, 66, 60, 67, 55, 66, 58, 53, 41, 51, 66, 46, 56, 66, 57, 51, 56, 66, 42, 54, 68, 47, 58, 69, 53, 66, 57, 69, 44, 61, 47, 47, 40, 52, 43];
+			var test2Airqs = [171, 31, 196, 69, 302, 473, 204, 54, 329, 80, 374, 22, 61, 49, 20, 485, 81, 119, 369, 371, 497, 389, 43, 135, 252, 336, 82, 366, 176, 302, 12, 347, 290, 208, 203, 466, 11, 188, 429, 383, 63, 409, 34, 467, 271, 481, 243, 261, 490, 1, 490, 496, 75, 406, 407, 475, 128, 202, 291, 149];
+			var test3Temps = [25, 27, 28, 28, 29, 29, 30, 30, 30, 30, 31, 31, 31, 32, 32, 33, 34, 34, 34, 35, 35, 35, 35, 36, 36, 36, 37, 38, 38, 39, 39, 39, 39, 38, 37, 37, 37, 37, 36, 36, 36, 35, 35, 34, 34, 33, 33, 32, 32, 32, 29, 29, 29, 29, 28, 28, 27, 26, 26, 25];
+			var test3Humis = [60, 61, 63, 65, 65, 66, 68, 70, 71, 71, 72, 73, 76, 76, 76, 78, 80, 81, 84, 84, 84, 84, 86, 86, 87, 87, 88, 88, 88, 89, 87, 87, 87, 86, 86, 84, 83, 83, 83, 82, 81, 79, 79, 77, 74, 74, 74, 72, 72, 71, 71, 70, 66, 66, 65, 65, 65, 63, 62, 61];
+			var test3Airqs = [198, 296, 349, 237, 186, 343, 117, 135, 373, 270, 231, 474, 246, 323, 117, 493, 395, 351, 205, 443, 345, 435, 441, 228, 164, 402, 124, 316, 416, 112, 143, 226, 403, 171, 101, 293, 246, 212, 207, 395, 361, 474, 246, 124, 487, 332, 328, 122, 288, 438, 402, 305, 346, 293, 117, 350, 488, 471, 336, 279];
+
+			var display0 = true;
+			var display1 = false;
+			var display2 = false;
+			var display3 = false;
 
 			var iosocket;
 			var text;
@@ -174,7 +186,7 @@
 						}
 
 						// clear canvas
-						content.clearRect(0, 0, 1200, 540);
+						content.clearRect(0, 0, 1200, 600);
 						updateText();
 
 						if (humis.length == humis.length && humis.length == airqs.length) {
@@ -207,47 +219,176 @@
 			};
 
 			function updateText() {
-				if (toggleVal == 0) {
-					content.fillStyle = "#a4150b"; // red
-					content.fillText("Off", 50, 50);
-				} else {
-					content.fillStyle = "#28d031"; // green
-					content.fillText("On", 50, 50);
+				if (display0) {
+					if (toggleVal == 0) {
+						content.fillStyle = "#a4150b"; // red
+						content.fillText("Off", 50, 50);
+					} else {
+						content.fillStyle = "#28d031"; // green
+						content.fillText("On", 50, 50);
+					}
+					content.fillStyle = "#fac152"; // yellow
+					content.fillText('Temperature: ' + temp + "°C", 50, 100);
+
+					content.fillStyle = "#a1d0ed"; // blue
+					content.fillText('Humidity: ' + humi + "%", 50, 150);
+
+					content.fillStyle = "#2e3843"; // gray
+					content.fillText('Air Quality: ' + airq, 50, 200);
+				} else if (display1 || display2 || display3) {
+					var at = 0;
+					var ah = 0;
+					var aa = 0;
+
+					if (display1) {
+						for (var i = 0; i < test1Temps.length; i++) {
+							at += test1Temps[i];
+							ah += test1Humis[i];
+							aa += test1Airqs[i];
+						}
+						at /= test1Temps.length;
+						ah /= test1Temps.length;
+						aa /= test1Temps.length;
+					} else if (display2) {
+						for (var i = 0; i < test2Temps.length; i++) {
+							at += test2Temps[i];
+							ah += test2Humis[i];
+							aa += test2Airqs[i];
+						}
+						at /= test2Temps.length;
+						ah /= test2Temps.length;
+						aa /= test2Temps.length;
+					} else if (display3) {
+						for (var i = 0; i < test3Temps.length; i++) {
+							at += test3Temps[i];
+							ah += test3Humis[i];
+							aa += test3Airqs[i];
+						}
+						at /= test3Temps.length;
+						ah /= test3Temps.length;
+						aa /= test3Temps.length;
+					}
+					at = Math.round(at * 100) / 100;
+					ah = Math.round(ah * 100) / 100;
+					aa = Math.round(aa * 100) / 100;
+
+					content.fillStyle = "#fac152"; // yellow
+					content.fillText('Average Temperature: ' + at + "°C", 50, 100);
+
+					content.fillStyle = "#a1d0ed"; // blue
+					content.fillText('Average Humidity: ' + ah + "%", 50, 150);
+
+					content.fillStyle = "#2e3843"; // gray
+					content.fillText('Average Air Quality: ' + aa, 50, 200);
 				}
-				content.fillStyle = "#fac152"; // yellow
-				content.fillText('Temperature: ' + temp, 50, 100);
-
-				content.fillStyle = "#a1d0ed"; // blue
-				content.fillText('Humidity: ' + humi, 50, 150);
-
-				content.fillStyle = "#2e3843"; // gray
-				content.fillText('Air Quality: ' + airq, 50, 200);
 			}
 
 			function updateGraph() {
-				// draw temperature
-				ctx.strokeStyle = "#fac152"; // yellow
-				ctx.beginPath();
-				for (var i = 0; i < temps.length; i++) {
-					ctx.lineTo(i * 10, 300 - temps[i] * 4);
-				}
-				ctx.stroke();
+				if (display0) {
+					var width = 1200 / (temps.length - 1);
 
-				// draw humidity
-				ctx.strokeStyle = "#a1d0ed"; // blue
-				ctx.beginPath();
-				for (var i = 0; i < humis.length; i++) {
-					ctx.lineTo(i * 10, 600 - humis[i] * 6);
-				}
-				ctx.stroke();
+					// draw temperature
+					ctx.strokeStyle = "#fac152"; // yellow
+					ctx.beginPath();
+					for (var i = 0; i < temps.length; i++) {
+						ctx.lineTo(i * width, 300 - temps[i] * 4);
+					}
+					ctx.stroke();
 
-				// draw air quality
-				ctx.strokeStyle = "#2e3843"; // gray
-				ctx.beginPath();
-				for (var i = 0; i < airqs.length; i++) {
-					ctx.lineTo(i * 10, 300 - airqs[i] / 10);
+					// draw humidity
+					ctx.strokeStyle = "#a1d0ed"; // blue
+					ctx.beginPath();
+					for (var i = 0; i < humis.length; i++) {
+						ctx.lineTo(i * width, 600 - humis[i] * 6);
+					}
+					ctx.stroke();
+
+					// draw air quality
+					ctx.strokeStyle = "#2e3843"; // gray
+					ctx.beginPath();
+					for (var i = 0; i < airqs.length; i++) {
+						ctx.lineTo(i * width, 400 - airqs[i] / 600 * 200);
+					}
+					ctx.stroke();
+				} else if (display1) {
+					var width = 1200 / (test1Temps.length - 1);
+
+					// draw temperature
+					ctx.strokeStyle = "#fac152"; // yellow
+					ctx.beginPath();
+					for (var i = 0; i < test1Temps.length; i++) {
+						ctx.lineTo(i * width, 300 - test1Temps[i] * 4);
+					}
+					ctx.stroke();
+
+					// draw humidity
+					ctx.strokeStyle = "#a1d0ed"; // blue
+					ctx.beginPath();
+					for (var i = 0; i < test1Humis.length; i++) {
+						ctx.lineTo(i * width, 600 - test1Humis[i] * 6);
+					}
+					ctx.stroke();
+
+					// draw air quality
+					ctx.strokeStyle = "#2e3843"; // gray
+					ctx.beginPath();
+					for (var i = 0; i < test1Airqs.length; i++) {
+						ctx.lineTo(i * width, 400 - test1Airqs[i] / 600 * 200);
+					}
+					ctx.stroke();
+				} else if (display2) {
+					var width = 1200 / (test2Temps.length - 1);
+
+					// draw temperature
+					ctx.strokeStyle = "#fac152"; // yellow
+					ctx.beginPath();
+					for (var i = 0; i < test2Temps.length; i++) {
+						ctx.lineTo(i * width, 300 - test2Temps[i] * 4);
+					}
+					ctx.stroke();
+
+					// draw humidity
+					ctx.strokeStyle = "#a1d0ed"; // blue
+					ctx.beginPath();
+					for (var i = 0; i < test2Humis.length; i++) {
+						ctx.lineTo(i * width, 600 - test2Humis[i] * 6);
+					}
+					ctx.stroke();
+
+					// draw air quality
+					ctx.strokeStyle = "#2e3843"; // gray
+					ctx.beginPath();
+					for (var i = 0; i < test2Airqs.length; i++) {
+						ctx.lineTo(i * width, 400 - test2Airqs[i] / 600 * 200);
+					}
+					ctx.stroke();
+				}  else if (display3) {
+					var width = 1200 / (test3Temps.length - 1);
+
+					// draw temperature
+					ctx.strokeStyle = "#fac152"; // yellow
+					ctx.beginPath();
+					for (var i = 0; i < test3Temps.length; i++) {
+						ctx.lineTo(i * width, 300 - test3Temps[i] * 4);
+					}
+					ctx.stroke();
+
+					// draw humidity
+					ctx.strokeStyle = "#a1d0ed"; // blue
+					ctx.beginPath();
+					for (var i = 0; i < test2Humis.length; i++) {
+						ctx.lineTo(i * width, 600 - test3Humis[i] * 6);
+					}
+					ctx.stroke();
+
+					// draw air quality
+					ctx.strokeStyle = "#2e3843"; // gray
+					ctx.beginPath();
+					for (var i = 0; i < test2Airqs.length; i++) {
+						ctx.lineTo(i * width, 400 - test3Airqs[i] / 600 * 200);
+					}
+					ctx.stroke();
 				}
-				ctx.stroke();
 			}
 			$(document).ready(function () {
 				$('#btnid').click(function () {
@@ -255,12 +396,34 @@
 					toggleVal %= 2;
 					iosocket.emit('buttonval', toggleVal);
 				});
+				$('#btnid0').click(function () {
+					display0 = true;
+					display1 = false;
+					display2 = false;
+					display3 = false;
+				});
+				$('#btnid1').click(function () {
+					display1 = true;
+					display0 = false;
+					display2 = false;
+					display3 = false;
+				});
+				$('#btnid2').click(function () {
+					display2 = true;
+					display0 = false;
+					display1 = false;
+					display3 = false;
+				});
+				$('#btnid3').click(function () {
+					display3 = true;
+					display0 = false;
+					display1 = false;
+					display2 = false;
+				});
 				c = document.getElementById('myCanvas');
 				ctx = c.getContext("2d");
 			});
 		</script>
-
-
 
 	<body>
 		<div id="chartContainer" style="height: 300px; width: 100%;"></div>
@@ -279,9 +442,42 @@
 			<div id="slider" class="sld"></div>
 			<div id="sliderValue">0</div>
 		</div>
+
+		<div class="dropdown">
+			<button onclick="myFunction()" class="dropbtn">Record</button>
+			<div id="myDropdown" class="dropdown-content">
+				<button id="btnid0" class="btn info">--Today--</button>
+				<button id="btnid1" class="btn info">02/05/19</button>
+				<button id="btnid2" class="btn info">02/06/19</button>
+				<button id="btnid3" class="btn info">02/07/19</button>
+			</div>
+		</div>
+
 		<div id="rData">
 			<canvas id="myCanvas"></canvas>
 		</div>
+
+		<script>
+			/* When the user clicks on the button, 
+			toggle between hiding and showing the dropdown content */
+			function myFunction() {
+				document.getElementById("myDropdown").classList.toggle("show");
+			}
+
+			// Close the dropdown if the user clicks outside of it
+			window.onclick = function (event) {
+				if (!event.target.matches('.dropbtn')) {
+					var dropdowns = document.getElementsByClassName("dropdown-content");
+					var i;
+					for (i = 0; i < dropdowns.length; i++) {
+						var openDropdown = dropdowns[i];
+						if (openDropdown.classList.contains('show')) {
+							openDropdown.classList.remove('show');
+						}
+					}
+				}
+			}
+		</script>
 
 		<style>
 			/* text css */
@@ -311,6 +507,53 @@
 
 			.default:hover {
 				background: #e7e7e7;
+			}
+
+			/* drop down menu btn */
+			.dropbtn {
+				background-color: gray;
+				color: white;
+				padding: 16px;
+				font-size: 16px;
+				border: none;
+				cursor: pointer;
+			}
+
+			.dropbtn:hover,
+			.dropbtn:focus {
+				background-color: dodgerblue;
+			}
+
+			.dropdown {
+				float: none;
+				position: relative;
+				display: inline-block;
+			}
+
+			.dropdown-content {
+				display: none;
+				position: absolute;
+				background-color: #f1f1f1;
+				min-width: 100px;
+				overflow: auto;
+				box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+				right: 0;
+				z-index: 1;
+			}
+
+			.dropdown-content a {
+				color: black;
+				padding: 12px 16px;
+				text-decoration: none;
+				display: block;
+			}
+
+			.dropdown a:hover {
+				background-color: #ddd;
+			}
+
+			.show {
+				display: block;
 			}
 
 			/* slider css
